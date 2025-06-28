@@ -1,0 +1,96 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: Sensor
+- This is the coupled model that contains the details about the Sensor.
+- **Ports:**
+  - Input Port: `feedback_in`
+  - Output Port: `feedback_out`
+- **Internal Couplings:**
+  - The output port of the Sensor is connected to the feedback input of each Controller.
+- **External Couplings:**
+  - The `feedback_out` port of the Sensor is connected to the `feedback_in` ports of all Controller components.
+
+### Atomic Model: Controller1
+- **Ports:**
+  - Input Port: `feedback_in`
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 1 (for toggling every second).
+  - `state`: Initially set to `off` (indicating the light is off).
+  - `toggle_count`: Initially set to 0 (to count the number of toggles).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - If `state` is `on`, set `state` to `off`.
+    - If `state` is `off`, set `state` to `on`.
+    - Increment `toggle_count`.
+    - Set `time_advance` to 1 (to continue toggling).
+  - **External Transition Function (delta_ext):**
+    - If a feedback message is received on `feedback_in`, set `state` to `off` and set `time_advance` to infinity (to stop toggling).
+  - **Output Function (lambda_out):**
+    - Send a signal to `signal_out` when toggling occurs (when transitioning between `on` and `off`).
+  - **Confluent Transition Function (delta_conf):**
+    - If a feedback message is received while toggling, stop toggling and turn the light off.
+
+### Atomic Model: Controller2
+- **Ports:**
+  - Input Port: `feedback_in`
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 2 (for toggling every two seconds).
+  - `state`: Initially set to `off`.
+  - `toggle_count`: Initially set to 0.
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - If `state` is `on`, set `state` to `off`.
+    - If `state` is `off`, set `state` to `on`.
+    - Increment `toggle_count`.
+    - Set `time_advance` to 2.
+  - **External Transition Function (delta_ext):**
+    - If a feedback message is received on `feedback_in`, set `state` to `off` and set `time_advance` to infinity.
+  - **Output Function (lambda_out):**
+    - Send a signal to `signal_out` when toggling occurs.
+  - **Confluent Transition Function (delta_conf):**
+    - If a feedback message is received while toggling, stop toggling and turn the light off.
+
+### Atomic Model: Controller3
+- **Ports:**
+  - Input Port: `feedback_in`
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 3 (for toggling every three seconds).
+  - `state`: Initially set to `off`.
+  - `toggle_count`: Initially set to 0.
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - If `state` is `on`, set `state` to `off`.
+    - If `state` is `off`, set `state` to `on`.
+    - Increment `toggle_count`.
+    - Set `time_advance` to 3.
+  - **External Transition Function (delta_ext):**
+    - If a feedback message is received on `feedback_in`, set `state` to `off` and set `time_advance` to infinity.
+  - **Output Function (lambda_out):**
+    - Send a signal to `signal_out` when toggling occurs.
+  - **Confluent Transition Function (delta_conf):**
+    - If a feedback message is received while toggling, stop toggling and turn the light off.
+
+### Coupled Model: Root
+- This is the coupled model that contains the details about the overall system.
+- **Ports:**
+  - Input Port: None (as this is the overall system and there is no hierarchy above this.)
+  - Output Port: None (as this is the overall system and there is no hierarchy above this.)
+- **Internal Couplings:**
+  - The output port of `Controller1` is connected to the input port of the Sensor.
+  - The output port of `Controller2` is connected to the input port of the Sensor.
+  - The output port of `Controller3` is connected to the input port of the Sensor.
+- **External Couplings:**
+  - None (as there are no Ports for this coupled model).
+
+### Summary of Execution Flow
+1. Each Controller starts toggling its light at 10 seconds after the simulation starts, with frequencies of 1, 2, and 3 seconds respectively.
+2. The Sensor counts the total on-off cycles from all Controllers.
+3. Once 10 cycles are detected, the Sensor sends feedback to each Controller to stop toggling and turn the lights off.
+
+### Important Notes
+- Ensure that the `time_advance` for each Controller is properly set to avoid infinite loops.
+- The Controllers must not set their `time_advance` to 0 unless they are transitioning to `off` to avoid infinite loops.
+- The `lambda` keyword has been avoided in the output function naming.

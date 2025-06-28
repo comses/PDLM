@@ -1,0 +1,58 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "off"
+        OutputFunction {
+            Action = "signal_out.add(off)"
+            Description = "Send 'off' to signal_out"
+            Guard = "" 
+            Message = "off" 
+            OutputPort = "signal_out"
+        }
+    }
+
+    State { 
+        Name = "on"
+        OutputFunction {
+            Action = "signal_out.add(on)"
+            Description = "Send 'on' to signal_out"
+            Guard = "" 
+            Message = "on" 
+            OutputPort = "signal_out"
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = ""
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "off" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = "Toggle state between on and off, set time_advance to 5 seconds"
+        Description = "Toggle state from off to on"
+        Guard = "state=off" 
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 5.0
+    }
+
+    InternalTransition {
+        Action = "Toggle state between on and off, set time_advance to 5 seconds"
+        Description = "Toggle state from on to off"
+        Guard = "state=on" 
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 5.0
+    }
+}

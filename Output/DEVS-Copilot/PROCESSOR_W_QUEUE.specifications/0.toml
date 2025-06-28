@@ -1,0 +1,52 @@
+[generator]
+out_ports = ["out"]
+time_advance = 11
+internal_transition_function = """
+count += 1
+if count == 3:
+    ta = float('inf')
+"""
+output_function = """send(out, 'job')"""
+
+[generator.state.count]
+type = "int"
+initial_value = 0
+
+[processor]
+in_ports = ["in"]
+out_ports = ["out"]
+time_advance = "inf"
+internal_transition_function = """
+if state == 'busy':
+    state = 'idle'
+    ta = 0
+elif queue:
+    queue.pop(0)
+    state = 'busy'
+    ta = 2
+"""
+external_transition_function = """
+if state == 'idle':
+    state = 'busy'
+    ta = 2
+else:
+    queue.append(message)
+"""
+output_function = """if state == 'busy': send(out, 'processed job')"""
+
+[processor.state.state]
+type = "string"
+initial_value = "idle"
+
+[processor.state.queue]
+type = "string"
+initial_value = "[]"
+
+[root]
+components = [
+  { model = "generator", name = "generator" },
+  { model = "processor", name = "processor" }
+]
+connections = [
+  { source = "generator.out", target = "processor.in" }
+]

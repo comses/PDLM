@@ -1,0 +1,37 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "sendingSignal"
+        OutputFunction { 
+            Action = "Toggle signal state"
+            Description = "Sending an on/off signal based on the current state"
+            Guard = "" 
+            Message = "signal_out"
+            OutputPort = "signal_out" 
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "Set time_advance to frequency"
+        Description = "Setting initial time_advance based on frequency"
+        Source = "start"  
+        Target = "sendingSignal" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 2.0
+    }
+
+    InternalTransition {
+        Action = "Set time_advance to frequency"
+        Description = "Setting next signal time based on frequency"
+        Guard = "" 
+        Source = "sendingSignal"  
+        Target = "sendingSignal"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 2.0
+    }
+}

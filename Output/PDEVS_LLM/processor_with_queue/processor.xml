@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="idle"/>
+  <states xsi:type="statechart:State" Name="busy">
+    <outputFunctions OutputPort="processed_job_out">
+      <Message>processed job signal</Message>
+      <Action>Send processed job signal</Action>
+    </outputFunctions>
+  </states>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0">
+    <Action>Set time_advance to 2</Action>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.0" target="//@states.1" InputPort="job_in">
+    <Action>Change state to busy</Action>
+    <Guard/>
+    <Message>job signal</Message>
+  </transitions>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.1" target="//@states.0">
+    <Action>Change state to idle</Action>
+    <Guard/>
+  </transitions>
+</statechart:Model>

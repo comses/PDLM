@@ -1,0 +1,51 @@
+Model {
+    ConfluentType = FET
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "inactive"
+    }
+
+    State { 
+        Name = "active"
+        OutputFunction {
+            Action = "toggleSignal()"
+            Description = "Alternates signals between 'on' and 'off' every second"
+            Guard = "" 
+            Message = "control_out" 
+            OutputPort = "control_out"
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "time_advance=10"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "inactive" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 10.0
+    }
+
+    InternalTransition {
+        Action = "state='active'; time_advance=1"
+        Description = "Inactive to active state transition"
+        Guard = "" 
+        Source = "inactive"  
+        Target = "active"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+
+    InternalTransition {
+        Action = "toggleSignal()"
+        Description = "Active state self-transition to toggle signal"
+        Guard = "" 
+        Source = "active"  
+        Target = "active"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+}

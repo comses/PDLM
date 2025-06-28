@@ -1,0 +1,57 @@
+Coupled Model {
+    Name = "root"
+
+    ModelInPortList{
+        ModelInPort { Name = "start" }
+    }
+
+    ModelOutPortList{
+        ModelOutPort { Name = "processed_job_out" }
+    }
+
+    Component {
+        Name = "generator"
+        InPortList {
+            InPort { Name = "in" }
+        }
+        OutPortList {
+            OutPort { Name = "job_out" }
+        }
+    }
+    Component {
+        Name = "processor"
+        InPortList {
+            InPort { Name = "job_in" }
+        }
+        OutPortList {
+            OutPort { Name = "processed_job_out" }
+        }
+    }
+
+    InternalCouplingList{
+        Coupling {
+            M1Name = "generator"
+            M1Port = "job_out"
+            M2Name = "processor"
+            M2Port = "job_in"
+        }
+    }
+
+    ExternalInputCouplingList{
+        Coupling {
+            M1Name = "root"
+            M1Port = "start"
+            M2Name = "generator"
+            M2Port = "in"
+        }
+    }
+
+    ExternalOutputCouplingList{
+        Coupling {
+            M1Name = "processor"
+            M1Port = "processed_job_out"
+            M2Name = "root"
+            M2Port = "processed_job_out"
+        }
+    }
+}

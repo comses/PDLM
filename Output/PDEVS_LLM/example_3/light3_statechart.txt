@@ -1,0 +1,82 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "off"
+        OutputFunction { 
+            Action = "Send current state"
+            Description = "Sending the current state to light_status_out"
+            Guard = "" 
+            Message = "off"
+            OutputPort = "light_status_out" 
+        }
+    }
+
+    State { 
+        Name = "on"
+        OutputFunction { 
+            Action = "Send current state"
+            Description = "Sending the current state to light_status_out"
+            Guard = "" 
+            Message = "on"
+            OutputPort = "light_status_out" 
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = ""
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "off" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = "Toggle state"
+        Description = "Toggling state from on to off or off to on"
+        Guard = "" 
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Infinity  
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = "Toggle state"
+        Description = "Toggling state from on to off or off to on"
+        Guard = "" 
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Infinity  
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Change state based on signal"
+        Description = "Changing state based on received signal"
+        Guard = ""
+        InputPort = "signal_in"
+        Message = "toggle"
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Change state based on signal"
+        Description = "Changing state based on received signal"
+        Guard = ""
+        InputPort = "signal_in"
+        Message = "toggle"
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+}

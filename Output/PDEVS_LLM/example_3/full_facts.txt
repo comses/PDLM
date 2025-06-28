@@ -1,0 +1,226 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: Coupled1
+- This is the first coupled model that contains the details about the Controller-Light system.
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **Internal Couplings:**
+  - The output port of `Controller1` is connected to the input port of `Light1`.
+- **External Couplings:**
+  - The `in` port of the `Coupled1` model is connected to the input port of `Controller1`.
+  - The output port of `Light1` is connected to the `out` port of the `Coupled1` model.
+
+### Atomic Model: Controller1
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `frequency`: Set to 1 (indicating a signal is sent every 1 second).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Set `time_advance` to the next scheduled signal time based on `frequency`.
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an on/off signal to `signal_out` based on the current state.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Light1
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `light_status_out`
+- **State Variables:**
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it was `on`, or to `on` if it was `off`.
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` accordingly.
+  - **Output Function (lambda_out):**
+    - Send the current `state` to `light_status_out`.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute both internal and external transition functions if a signal arrives at the same time.
+
+### Coupled Model: Coupled2
+- This is the second coupled model that contains the details about the Controller-Light system.
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **Internal Couplings:**
+  - The output port of `Controller2` is connected to the input port of `Light2`.
+- **External Couplings:**
+  - The `in` port of the `Coupled2` model is connected to the input port of `Controller2`.
+  - The output port of `Light2` is connected to the `out` port of the `Coupled2` model.
+
+### Atomic Model: Controller2
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `frequency`: Set to 2 (indicating a signal is sent every 2 seconds).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Set `time_advance` to the next scheduled signal time based on `frequency`.
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an on/off signal to `signal_out` based on the current state.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Light2
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `light_status_out`
+- **State Variables:**
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it was `on`, or to `on` if it was `off`.
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` accordingly.
+  - **Output Function (lambda_out):**
+    - Send the current `state` to `light_status_out`.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute both internal and external transition functions if a signal arrives at the same time.
+
+### Coupled Model: Coupled3
+- This is the third coupled model that contains the details about the Controller-Light system.
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **Internal Couplings:**
+  - The output port of `Controller3` is connected to the input port of `Light3`.
+- **External Couplings:**
+  - The `in` port of the `Coupled3` model is connected to the input port of `Controller3`.
+  - The output port of `Light3` is connected to the `out` port of the `Coupled3` model.
+
+### Atomic Model: Controller3
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `frequency`: Set to 3 (indicating a signal is sent every 3 seconds).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Set `time_advance` to the next scheduled signal time based on `frequency`.
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an on/off signal to `signal_out` based on the current state.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Light3
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `light_status_out`
+- **State Variables:**
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it was `on`, or to `on` if it was `off`.
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` accordingly.
+  - **Output Function (lambda_out):**
+    - Send the current `state` to `light_status_out`.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute both internal and external transition functions if a signal arrives at the same time.
+
+### Coupled Model: Coupled4
+- This is the fourth coupled model that contains the details about the Controller-Light system.
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **Internal Couplings:**
+  - The output port of `Controller4` is connected to the input port of `Light4`.
+- **External Couplings:**
+  - The `in` port of the `Coupled4` model is connected to the input port of `Controller4`.
+  - The output port of `Light4` is connected to the `out` port of the `Coupled4` model.
+
+### Atomic Model: Controller4
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `frequency`: Set to 4 (indicating a signal is sent every 4 seconds).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Set `time_advance` to the next scheduled signal time based on `frequency`.
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an on/off signal to `signal_out` based on the current state.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Light4
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `light_status_out`
+- **State Variables:**
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it was `on`, or to `on` if it was `off`.
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` accordingly.
+  - **Output Function (lambda_out):**
+    - Send the current `state` to `light_status_out`.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute both internal and external transition functions if a signal arrives at the same time.
+
+### Coupled Model: Coupled5
+- This is the fifth coupled model that contains the details about the Controller-Light system.
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **Internal Couplings:**
+  - The output port of `Controller5` is connected to the input port of `Light5`.
+- **External Couplings:**
+  - The `in` port of the `Coupled5` model is connected to the input port of `Controller5`.
+  - The output port of `Light5` is connected to the `out` port of the `Coupled5` model.
+
+### Atomic Model: Controller5
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `frequency`: Set to 5 (indicating a signal is sent every 5 seconds).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Set `time_advance` to the next scheduled signal time based on `frequency`.
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an on/off signal to `signal_out` based on the current state.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Light5
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `light_status_out`
+- **State Variables:**
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it was `on`, or to `on` if it was `off`.
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` accordingly.
+  - **Output Function (lambda_out):**
+    - Send the current `state` to `light_status_out`.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute both internal and external transition functions if a signal arrives at the same time.
+
+### Summary of Execution Flow
+1. The `Controller1` sends on/off signals at 1-second intervals, `Controller2` at 2 seconds, `Controller3` at 3 seconds, `Controller4` at 4 seconds, and `Controller5` at 5 seconds.
+2. Each `Light` component toggles its state based on the received signals.
+3. The initial state of all lights is off, and the controllers will start sending signals 10 seconds after the simulation starts.
+
+### Important Notes
+- Ensure that the `time_advance` for each `Controller` is properly set to avoid an infinite loop.
+- The `Light` components must not set their `time_advance` to 0 unless they are transitioning to avoid infinite loops.
+- The `lambda` keyword has been avoided in the output function naming.

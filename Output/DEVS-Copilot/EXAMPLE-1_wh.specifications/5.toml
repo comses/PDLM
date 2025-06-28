@@ -1,0 +1,68 @@
+[controller]
+out_ports = ["control_out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 1
+"""
+output_function = """
+send(control_out, state)
+"""
+
+[controller.state.state]
+type = "string"
+initial_value = "on"
+
+[controller.state.time_advance]
+type = "float"
+initial_value = 10
+
+[light]
+in_ports = ["control_in"]
+out_ports = ["status_out"]
+time_advance = inf
+external_transition_function = """
+state = message
+ta = 0
+"""
+output_function = """
+send(status_out, state)
+"""
+
+[light.state.state]
+type = "string"
+initial_value = "off"
+
+[light.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[sensor]
+in_ports = ["status_in"]
+out_ports = []
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[sensor.state.state]
+type = "string"
+initial_value = "off"
+
+[sensor.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[root]
+components = [
+    { model = "controller", name = "controller_instance" },
+    { model = "light", name = "light_instance" },
+    { model = "sensor", name = "sensor_instance" }
+]
+connections = [
+    { source = "controller_instance.control_out", target = "light_instance.control_in" },
+    { source = "light_instance.status_out", target = "sensor_instance.status_in" }
+]

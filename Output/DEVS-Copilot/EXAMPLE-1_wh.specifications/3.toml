@@ -1,0 +1,247 @@
+# Atomic Model Definitions for Controllers
+[controller1]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 1
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller1.state.state]
+type = "string"
+initial_value = "on"
+
+[controller1.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller2]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 2
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller2.state.state]
+type = "string"
+initial_value = "on"
+
+[controller2.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller3]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 3
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller3.state.state]
+type = "string"
+initial_value = "on"
+
+[controller3.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller4]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 4
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller4.state.state]
+type = "string"
+initial_value = "on"
+
+[controller4.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller5]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 5
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller5.state.state]
+type = "string"
+initial_value = "on"
+
+[controller5.state.time_advance]
+type = "float"
+initial_value = 10
+
+# Atomic Model Definitions for Lights
+[light1]
+in_ports = ["in"]
+out_ports = []
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light1.state.state]
+type = "string"
+initial_value = "off"
+
+[light1.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[light2]
+in_ports = ["in"]
+out_ports = []
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light2.state.state]
+type = "string"
+initial_value = "off"
+
+[light2.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[light3]
+in_ports = ["in"]
+out_ports = []
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light3.state.state]
+type = "string"
+initial_value = "off"
+
+[light3.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[light4]
+in_ports = ["in"]
+out_ports = []
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light4.state.state]
+type = "string"
+initial_value = "off"
+
+[light4.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[light5]
+in_ports = ["in"]
+out_ports = []
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light5.state.state]
+type = "string"
+initial_value = "off"
+
+[light5.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+# Coupled Model Definitions
+[coupled1]
+components = [
+    { model = "controller1", name = "controller1_instance" },
+    { model = "light1", name = "light1_instance" }
+]
+connections = [
+    { source = "controller1_instance.out", target = "light1_instance.in" }
+]
+
+[coupled2]
+components = [
+    { model = "controller2", name = "controller2_instance" },
+    { model = "light2", name = "light2_instance" }
+]
+connections = [
+    { source = "controller2_instance.out", target = "light2_instance.in" }
+]
+
+[coupled3]
+components = [
+    { model = "controller3", name = "controller3_instance" },
+    { model = "light3", name = "light3_instance" }
+]
+connections = [
+    { source = "controller3_instance.out", target = "light3_instance.in" }
+]
+
+[coupled4]
+components = [
+    { model = "controller4", name = "controller4_instance" },
+    { model = "light4", name = "light4_instance" }
+]
+connections = [
+    { source = "controller4_instance.out", target = "light4_instance.in" }
+]
+
+[coupled5]
+components = [
+    { model = "controller5", name = "controller5_instance" },
+    { model = "light5", name = "light5_instance" }
+]
+connections = [
+    { source = "controller5_instance.out", target = "light5_instance.in" }
+]
+
+# Root Coupled Model
+[root]
+components = [
+    { model = "coupled1", name = "coupled1_instance" },
+    { model = "coupled2", name = "coupled2_instance" },
+    { model = "coupled3", name = "coupled3_instance" },
+    { model = "coupled4", name = "coupled4_instance" },
+    { model = "coupled5", name = "coupled5_instance" }
+]

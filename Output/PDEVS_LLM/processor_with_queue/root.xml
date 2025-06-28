@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<model>
+  <compositeModel name="CoupledModel">
+    <coupling m1name="generator" m1port="job_out" m2name="processor" m2port="job_in"/>
+    <coupling m1name="root" m1port="start" m2name="generator" m2port="in"/>
+    <coupling m1name="processor" m1port="processed_job_out" m2name="root" m2port="processed_job_out"/>
+  </compositeModel>
+</model>

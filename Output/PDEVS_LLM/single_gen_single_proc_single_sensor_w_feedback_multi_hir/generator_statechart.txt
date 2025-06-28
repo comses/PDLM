@@ -1,0 +1,54 @@
+Model {
+    ConfluentType = FET
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "generating"
+    }
+
+    State { 
+        Name = "stopped"
+    }
+
+    // Transitions
+    Transition {  
+        Action = "Initialize job_count to 0 and set time_advance to 3"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "generating" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 3.0
+    }
+
+    InternalTransition {
+        Action = "Increment job_count and prepare next job"
+        Description = "Increment job_count and prepare to generate the next job"
+        Guard = "" 
+        Source = "generating"  
+        Target = "generating"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 3.0
+    }
+
+    ExternalTransition {
+        Action = "Set time_advance to infinity"
+        Description = "Stop signal received, stop generating jobs"
+        Guard = ""
+        InputPort = "stop"
+        Message = "StopSignalReceived"
+        Source = "generating"  
+        Target = "stopped"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    OutputFunction {
+        Action = "Send job signal"
+        Description = "Send a job signal to out when a job is generated"
+        Guard = "" 
+        Message = "JobSignal" 
+        OutputPort = "out"
+    }
+}

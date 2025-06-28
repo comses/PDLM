@@ -1,0 +1,14 @@
+- **ports:**
+  - output port: `signal_out`
+- **state variables:**
+  - `time_advance`: initially set to 0 (to allow immediate transitions).
+  - `frequency`: set to 3 (indicating a signal is sent every 3 seconds).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - set `time_advance` to the next scheduled signal time based on `frequency`.
+  - **external transition function (delta_ext):**
+    - not applicable for this model since it does not receive any messages.
+  - **output function (lambda_out):**
+    - send an on/off signal to `signal_out` based on the current state.
+  - **confluent transition function (delta_conf):**
+    - execute the internal transition function and output function if a message arrives at the same time.

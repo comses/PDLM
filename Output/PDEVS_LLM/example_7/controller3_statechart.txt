@@ -1,0 +1,82 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "off"
+        OutputFunction {
+            Action = "signal_out.send(off)"
+            Description = "Send signal when state is off"
+            Guard = "" 
+            Message = "off" 
+            OutputPort = "signal_out"
+        }
+    }
+
+    State { 
+        Name = "on"
+        OutputFunction {
+            Action = "signal_out.send(on)"
+            Description = "Send signal when state is on"
+            Guard = "" 
+            Message = "on" 
+            OutputPort = "signal_out"
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "time_advance=3, toggle_count=0, state=off"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "off" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 3.0
+    }
+
+    InternalTransition {
+        Action = "state.toggle(), toggle_count++"
+        Description = "Toggle state and increment count"
+        Guard = "state=on" 
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 3.0
+    }
+
+    InternalTransition {
+        Action = "state.toggle(), toggle_count++"
+        Description = "Toggle state and increment count"
+        Guard = "state=off" 
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 3.0
+    }
+
+    ExternalTransition {
+        Action = "state=off, time_advance=Infinity"
+        Description = "Set state to off and stop toggling on feedback"
+        Guard = ""
+        InputPort = "feedback_in"
+        Message = "stop"
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "state=off, time_advance=Infinity"
+        Description = "Set state to off and stop toggling on feedback"
+        Guard = ""
+        InputPort = "feedback_in"
+        Message = "stop"
+        Source = "off"  
+        Target = "off"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+}

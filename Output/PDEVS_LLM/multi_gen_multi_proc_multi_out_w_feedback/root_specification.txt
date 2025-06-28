@@ -1,0 +1,109 @@
+Coupled Model {
+    Name = "root"
+
+    ModelInPortList{
+    }
+
+    ModelOutPortList{
+    }
+
+    Component {
+        Name = "generator_a"
+        InPortList {
+            InPort { Name = "stop" }
+        }
+        OutPortList {
+            OutPort { Name = "out" }
+        }
+    }
+    Component {
+        Name = "generator_b"
+        InPortList {
+            InPort { Name = "stop" }
+        }
+        OutPortList {
+            OutPort { Name = "out_1" }
+            OutPort { Name = "out_2" }
+        }
+    }
+    Component {
+        Name = "processor"
+        InPortList {
+            InPort { Name = "in_1" }
+            InPort { Name = "in_2" }
+        }
+        OutPortList {
+            OutPort { Name = "out_1" }
+            OutPort { Name = "out_2" }
+        }
+    }
+    Component {
+        Name = "sensor_a"
+        InPortList {
+            InPort { Name = "in" }
+        }
+        OutPortList {
+            OutPort { Name = "out" }
+        }
+    }
+    Component {
+        Name = "sensor_b"
+        InPortList {
+            InPort { Name = "in" }
+        }
+        OutPortList {
+            OutPort { Name = "out" }
+        }
+    }
+
+    InternalCouplingList{
+        Coupling {
+            M1Name = "generator_a"
+            M1Port = "out"
+            M2Name = "processor"
+            M2Port = "in_1"
+        }
+        Coupling {
+            M1Name = "generator_b"
+            M1Port = "out_1"
+            M2Name = "processor"
+            M2Port = "in_1"
+        }
+        Coupling {
+            M1Name = "generator_b"
+            M1Port = "out_2"
+            M2Name = "processor"
+            M2Port = "in_2"
+        }
+        Coupling {
+            M1Name = "processor"
+            M1Port = "out_1"
+            M2Name = "sensor_a"
+            M2Port = "in"
+        }
+        Coupling {
+            M1Name = "processor"
+            M1Port = "out_2"
+            M2Name = "sensor_b"
+            M2Port = "in"
+        }
+        Coupling {
+            M1Name = "sensor_a"
+            M1Port = "out"
+            M2Name = "generator_a"
+            M2Port = "stop"
+        }
+        Coupling {
+            M1Name = "sensor_b"
+            M1Port = "out"
+            M2Name = "generator_b"
+            M2Port = "stop"
+        }
+    }
+
+    ExternalInputCouplingList{
+    }
+
+    ExternalOutputCouplingList{
+    }
+}

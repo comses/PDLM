@@ -1,0 +1,53 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "waiting"
+        OutputFunction {
+            Action = "send(stop_signal)"
+            Description = "Send stop signal when toggle_count reaches 10"
+            Guard = "toggle_count=10" 
+            Message = "stop" 
+            OutputPort = "stop_signal_out"
+        }
+    }
+
+    FinalState { Name = "final" }
+
+    // Transitions
+    Transition {  
+        Action = "toggle_count=0,time_advance=Infinity"
+        Description = "Initializing the model and waiting for light status input"
+        Source = "start"  
+        Target = "waiting" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "toggle_count++,time_advance=Infinity"
+        Description = "Increment toggle_count upon receiving light status"
+        Guard = "toggle_count<10"
+        InputPort = "light_status_in"
+        Message = ""
+        Source = "waiting"  
+        Target = "waiting"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "toggle_count=0,time_advance=Infinity"
+        Description = "Reset toggle_count and send stop signal when count reaches 10"
+        Guard = "toggle_count=10"
+        InputPort = "light_status_in"
+        Message = ""
+        Source = "waiting"  
+        Target = "final"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+}

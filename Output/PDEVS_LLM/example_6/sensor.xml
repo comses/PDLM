@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="waiting">
+    <outputFunctions OutputPort="stop_signal_out">
+      <Message>stop</Message>
+      <Action>send(stop_signal)</Action>
+    </outputFunctions>
+  </states>
+  <finalState Name="final"/>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0">
+    <Action>toggle_count=0</Action>
+    <Action>time_advance=Infinity</Action>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Infinity" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.0" InputPort="light_status_in">
+    <Action>toggle_count++</Action>
+    <Action>time_advance=Infinity</Action>
+    <Guard>toggle_count&lt;10</Guard>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Infinity" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.1" InputPort="light_status_in">
+    <Action>toggle_count=0</Action>
+    <Action>time_advance=Infinity</Action>
+    <Guard>toggle_count=10</Guard>
+  </transitions>
+</statechart:Model>

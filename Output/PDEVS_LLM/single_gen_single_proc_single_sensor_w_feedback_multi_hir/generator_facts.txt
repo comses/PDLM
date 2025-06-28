@@ -1,0 +1,16 @@
+- **ports:**
+  - input port: `stop`
+  - output port: `out`
+- **state variables:**
+  - `time_advance`: initially set to 3 (the job generation interval).
+  - `job_count`: initially set to 0 (to count the number of jobs generated).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - increment `job_count` and prepare to generate the next job.
+    - if the `stop` signal is received, set `time_advance` to infinity (to stop generating jobs).
+  - **external transition function (delta_ext):**
+    - if a stop signal is received at `stop`, set `time_advance` to infinity and transition to a passive state.
+  - **output function (lambda_out):**
+    - send a job signal to `out` when a job is generated.
+  - **confluent transition function (delta_conf):**
+    - execute the internal transition function and output function if a stop signal arrives at the same time as the internal transition.

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="active"/>
+  <states xsi:type="statechart:State" Name="passive"/>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0">
+    <Action>job_count_1=0</Action>
+    <Action>job_count_2=0</Action>
+    <Action>time_advance=6</Action>
+  </transitions>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="6.0" source="//@states.0" target="//@states.0">
+    <Action>job_count_1=job_count_1+1</Action>
+    <Action>job_count_2=job_count_2+1</Action>
+    <Action>time_advance=6</Action>
+    <Guard/>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Infinity" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.1" InputPort="stop">
+    <Action>state=passive</Action>
+    <Action>time_advance=Infinity</Action>
+    <Guard/>
+  </transitions>
+</statechart:Model>

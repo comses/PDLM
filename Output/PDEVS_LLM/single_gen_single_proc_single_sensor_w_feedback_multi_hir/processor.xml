@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="idle"/>
+  <states xsi:type="statechart:State" Name="busy">
+    <outputFunctions OutputPort="out_1">
+      <Message>ProcessedJob</Message>
+      <Action>Send processed job signal</Action>
+    </outputFunctions>
+  </states>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0">
+    <Action>Initialize job_queue and set time_advance to 2</Action>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.0" target="//@states.1" InputPort="in">
+    <Action>Add job to job_queue</Action>
+    <Action> If idle set state to busy and time_advance to 2</Action>
+    <Guard/>
+    <Message>JobReceived</Message>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.1" target="//@states.1" InputPort="in">
+    <Action>Add job to job_queue</Action>
+    <Guard>state=busy</Guard>
+    <Message>JobReceived</Message>
+  </transitions>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.1" target="//@states.0">
+    <Action>If job_queue is empty</Action>
+    <Action> change state to idle. Else process next job and set time_advance to 2</Action>
+    <Guard/>
+  </transitions>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.1" target="//@states.0">
+    <Action>Process job and immediately transition to idle after processing</Action>
+    <Guard>state=busy &amp;&amp; job_queue.isNotEmpty()</Guard>
+  </transitions>
+</statechart:Model>

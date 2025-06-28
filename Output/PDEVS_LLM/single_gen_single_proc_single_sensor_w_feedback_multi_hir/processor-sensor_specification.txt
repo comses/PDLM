@@ -1,0 +1,57 @@
+Coupled Model {
+    Name = "processor-sensor"
+
+    ModelInPortList{
+        ModelInPort { Name = "start" }
+    }
+
+    ModelOutPortList{
+        ModelOutPort { Name = "stop" }
+    }
+
+    Component {
+        Name = "processor"
+        InPortList {
+            InPort { Name = "in" }
+        }
+        OutPortList {
+            OutPort { Name = "out_1" }
+        }
+    }
+    Component {
+        Name = "sensor"
+        InPortList {
+            InPort { Name = "in" }
+        }
+        OutPortList {
+            OutPort { Name = "out" }
+        }
+    }
+
+    InternalCouplingList{
+        Coupling {
+            M1Name = "processor"
+            M1Port = "out_1"
+            M2Name = "sensor"
+            M2Port = "in"
+        }
+    }
+
+    ExternalInputCouplingList{
+        Coupling {
+            M1Name = "processor-sensor"
+            M1Port = "start"
+            M2Name = "processor"
+            M2Port = "in"
+        }
+    }
+
+    ExternalOutputCouplingList{
+        Coupling {
+            M1Name = "sensor"
+            M1Port = "out"
+            M2Name = "processor-sensor"
+            M2Port = "stop"
+        }
+    }
+}

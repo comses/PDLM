@@ -1,0 +1,42 @@
+[processor]
+in_ports = ["job_in"]
+out_ports = ["job_out"]
+time_advance = "inf"
+internal_transition_function = """
+if state == 'busy':
+    if len(queue) > 0:
+        queue.pop(0)
+        if len(queue) == 0:
+            state = 'idle'
+            ta = float('inf')
+        else:
+            ta = processing_time
+"""
+
+external_transition_function = """
+if port_name == 'job_in':
+    queue.append(message)
+    if state == 'idle':
+        state = 'busy'
+        ta = processing_time
+"""
+
+output_function = """
+send(job_out, 'processed_job')
+"""
+
+[processor.state.state]
+type = "string"
+initial_value = "idle"
+
+[processor.state.queue]
+type = "list"
+initial_value = []
+
+[processor.state.processing_time]
+type = "float"
+initial_value = 3
+
+[processor.state.time_advance]
+type = "float"
+initial_value = "inf"

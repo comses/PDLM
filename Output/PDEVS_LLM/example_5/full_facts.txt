@@ -1,0 +1,78 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: Light
+- This is the coupled model that contains the details about the Light and Sensor system.
+- **Ports:**
+  - Input Port: `control_in`
+  - Output Port: `status_out`
+- **Internal Couplings:**
+  - The output port of `Light` component is connected to the input port of `Sensor`.
+- **External Couplings:**
+  - The `control_in` port of the `Light` coupled model is connected to the output port of the `Controller` component.
+  - The output port of the `Sensor` component is connected to the `status_out` port of the `Light` coupled model.
+
+### Atomic Model: Controller
+- **Ports:**
+  - Output Port: `control_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 10 (to delay the start of sending commands).
+  - `state`: Initially set to `inactive` (indicating the controller has not started sending signals).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `active`.
+    - Set `time_advance` to 1 (to send signals every second).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an "on" signal to `control_out` when transitioning from `inactive` to `active`.
+    - Alternate sending "on" and "off" signals every second while in the `active` state.
+  - **Confluent Transition Function (delta_conf):**
+    - If a message arrives while in the `inactive` state, execute the internal transition function and output function immediately.
+
+### Atomic Model: Light
+- **Ports:**
+  - Input Port: `control_in`
+  - Output Port: `status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Toggle the `state` between `on` and `off`.
+    - Set `time_advance` to 1 (to prepare for the next toggle).
+  - **External Transition Function (delta_ext):**
+    - If a control signal is received at `control_in`, set the `state` to "on" if currently "off", and to "off" if currently "on".
+    - Set `time_advance` to 1 (to prepare for the next toggle).
+  - **Output Function (lambda_out):**
+    - Send the current `state` ("on" or "off") to `status_out` after each toggle.
+  - **Confluent Transition Function (delta_conf):**
+    - If a control signal is received while toggling, process the control signal and toggle the state immediately.
+
+### Atomic Model: Sensor
+- **Ports:**
+  - Input Port: `light_status_in`
+  - Output Port: `status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the sensor detects the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - No state change, retains the last known state.
+    - Set `time_advance` to 0 (to allow immediate transitions).
+  - **External Transition Function (delta_ext):**
+    - If a light status signal is received at `light_status_in`, update `state` to match the incoming signal ("on" or "off").
+  - **Output Function (lambda_out):**
+    - Send the current `state` ("on" or "off") to `status_out` immediately after receiving a signal.
+  - **Confluent Transition Function (delta_conf):**
+    - If a light status signal is received while in the middle of processing, update the state immediately.
+
+### Summary of Execution Flow
+1. The `Controller` waits for 10 seconds before sending an "on" signal.
+2. After the initial signal, the `Controller` alternates between sending "on" and "off" signals every second.
+3. The `Light` receives the control signals and toggles its state accordingly.
+4. The `Sensor` detects the current state of the `Light` and sends updates on its status.
+
+### Important Notes
+- Ensure that the `time_advance` for the `Controller` is properly set to avoid an infinite loop.
+- The `Light` must not set its `time_advance` to 0 unless it is transitioning to toggle its state, to avoid infinite loops.
+- The `lambda` keyword has been avoided in the output function naming.

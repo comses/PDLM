@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="off">
+    <outputFunctions OutputPort="status_out">
+      <Message>off</Message>
+      <Action>sendState('off')</Action>
+    </outputFunctions>
+  </states>
+  <states xsi:type="statechart:State" Name="on">
+    <outputFunctions OutputPort="status_out">
+      <Message>on</Message>
+      <Action>sendState('on')</Action>
+    </outputFunctions>
+  </states>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0"/>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.1" InputPort="light_status_in">
+    <Action>updateState(message)</Action>
+    <Guard/>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="0.0" source="//@states.1" target="//@states.0" InputPort="light_status_in">
+    <Action>updateState(message)</Action>
+    <Guard/>
+  </transitions>
+</statechart:Model>

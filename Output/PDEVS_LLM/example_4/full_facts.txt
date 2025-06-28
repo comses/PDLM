@@ -1,0 +1,91 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Atomic Model: Controller1
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Toggle `state` between `on` and `off`.
+    - Set `time_advance` to 1 second (to schedule the next toggle).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send the current `state` (either `on` or `off`) to `signal_out` after the internal transition.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Controller2
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Toggle `state` between `on` and `off`.
+    - Set `time_advance` to 2 seconds (to schedule the next toggle).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send the current `state` (either `on` or `off`) to `signal_out` after the internal transition.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Controller3
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Toggle `state` between `on` and `off`.
+    - Set `time_advance` to 3 seconds (to schedule the next toggle).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send the current `state` (either `on` or `off`) to `signal_out` after the internal transition.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Controller4
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Toggle `state` between `on` and `off`.
+    - Set `time_advance` to 4 seconds (to schedule the next toggle).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send the current `state` (either `on` or `off`) to `signal_out` after the internal transition.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Controller5
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Toggle `state` between `on` and `off`.
+    - Set `time_advance` to 5 seconds (to schedule the next toggle).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send the current `state` (either `on` or `off`) to `signal_out` after the internal transition.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Important Notes
+- Each controller auto-starts its toggling cycle 10 seconds after the simulation starts.
+- The `time_advance` for each controller is set to the respective frequency (1, 2, 3, 4, or 5 seconds) to ensure the correct timing for toggling the light.
+- Ensure that the `time_advance` values are properly managed to avoid any infinite loops.

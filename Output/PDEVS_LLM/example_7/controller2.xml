@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="off">
+    <outputFunctions OutputPort="signal_out">
+      <Message>off</Message>
+      <Action>signal_out.send(off)</Action>
+    </outputFunctions>
+  </states>
+  <states xsi:type="statechart:State" Name="on">
+    <outputFunctions OutputPort="signal_out">
+      <Message>on</Message>
+      <Action>signal_out.send(on)</Action>
+    </outputFunctions>
+  </states>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0">
+    <Action>time_advance=2</Action>
+    <Action> toggle_count=0</Action>
+    <Action> state=off</Action>
+  </transitions>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.1" target="//@states.0">
+    <Action>state.toggle()</Action>
+    <Action> toggle_count++</Action>
+    <Guard>state=on</Guard>
+  </transitions>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="2.0" source="//@states.0" target="//@states.1">
+    <Action>state.toggle()</Action>
+    <Action> toggle_count++</Action>
+    <Guard>state=off</Guard>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Infinity" TimeAdvanceValue="0.0" source="//@states.1" target="//@states.0" InputPort="feedback_in">
+    <Action>state=off</Action>
+    <Action> time_advance=Infinity</Action>
+    <Guard/>
+    <Message>stop</Message>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Infinity" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.0" InputPort="feedback_in">
+    <Action>state=off</Action>
+    <Action> time_advance=Infinity</Action>
+    <Guard/>
+    <Message>stop</Message>
+  </transitions>
+</statechart:Model>

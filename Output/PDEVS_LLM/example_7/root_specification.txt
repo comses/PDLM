@@ -1,0 +1,42 @@
+Coupled Model {
+    Name = "RootSystem"
+
+    ModelInPortList{
+        ModelInPort { Name = "feedback_in" }
+    }
+
+    ModelOutPortList{
+        ModelOutPort { Name = "signal_out" }
+    }
+
+    Component {
+        Name = "SensorControlSystem"
+        InPortList {
+            InPort { Name = "feedback_in" }
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+
+    InternalCouplingList{
+    }
+
+    ExternalInputCouplingList{
+        Coupling {
+            M1Name = "RootSystem"
+            M1Port = "feedback_in"
+            M2Name = "SensorControlSystem"
+            M2Port = "feedback_in"
+        }
+    }
+
+    ExternalOutputCouplingList{
+        Coupling {
+            M1Name = "SensorControlSystem"
+            M1Port = "signal_out"
+            M2Name = "RootSystem"
+            M2Port = "signal_out"
+        }
+    }
+}

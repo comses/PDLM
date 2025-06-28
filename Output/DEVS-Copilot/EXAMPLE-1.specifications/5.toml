@@ -1,0 +1,119 @@
+[controller]
+in_ports = []
+out_ports = ["command"]
+time_advance = 10
+internal_transition_function = """
+if status == "on":
+    status = "off"
+else:
+    status = "on"
+ta = 1
+"""
+external_transition_function = ""
+output_function = """
+send(command, status)
+"""
+
+[controller.state.status]
+type = "string"
+initial_value = "off"
+
+[light1]
+in_ports = ["control"]
+out_ports = []
+time_advance = inf
+internal_transition_function = ""
+external_transition_function = """
+if port_name == "control":
+    status = message
+"""
+
+[light1.state.status]
+type = "string"
+initial_value = "off"
+
+[light2]
+in_ports = ["control"]
+out_ports = []
+time_advance = inf
+internal_transition_function = ""
+external_transition_function = """
+if port_name == "control":
+    status = message
+"""
+
+[light2.state.status]
+type = "string"
+initial_value = "off"
+
+[light3]
+in_ports = ["control"]
+out_ports = []
+time_advance = inf
+internal_transition_function = ""
+external_transition_function = """
+if port_name == "control":
+    status = message
+"""
+
+[light3.state.status]
+type = "string"
+initial_value = "off"
+
+[light4]
+in_ports = ["control"]
+out_ports = []
+time_advance = inf
+internal_transition_function = ""
+external_transition_function = """
+if port_name == "control":
+    status = message
+"""
+
+[light4.state.status]
+type = "string"
+initial_value = "off"
+
+[light5]
+in_ports = ["control"]
+out_ports = []
+time_advance = inf
+internal_transition_function = ""
+external_transition_function = """
+if port_name == "control":
+    status = message
+"""
+
+[light5.state.status]
+type = "string"
+initial_value = "off"
+
+[root]
+components = [
+  { model = "controller", name = "controller" },
+  { model = "light1", name = "light1" },
+  { model = "light2", name = "light2" },
+  { model = "light3", name = "light3" },
+  { model = "light4", name = "light4" },
+  { model = "light5", name = "light5" }
+]
+
+[[root.connections]]
+source = "controller.command"
+target = "light1.control"
+
+[[root.connections]]
+source = "controller.command"
+target = "light2.control"
+
+[[root.connections]]
+source = "controller.command"
+target = "light3.control"
+
+[[root.connections]]
+source = "controller.command"
+target = "light4.control"
+
+[[root.connections]]
+source = "controller.command"
+target = "light5.control"

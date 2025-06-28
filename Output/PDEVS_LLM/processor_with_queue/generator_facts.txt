@@ -1,0 +1,16 @@
+- **ports:**
+  - output port: `job_out`
+- **state variables:**
+  - `time_advance`: initially set to 0 (to allow immediate transitions).
+  - `job_count`: initially set to 0 (to count the number of jobs sent).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - increment `job_count`.
+    - if `job_count` < 3, set `time_advance` to the next scheduled job time (11, 12, or 13 seconds).
+    - if `job_count` = 3, set `time_advance` to infinity (to stop sending jobs).
+  - **external transition function (delta_ext):**
+    - not applicable for this model since it does not receive any messages.  
+  - **output function (lambda_out):**    
+    - send a job signal to `job_out` when `job_count` is 1, 2, or 3.
+  - **confluent transition function (delta_conf):**
+    - execute the internal transition function and output function if a message arrives at the same time.

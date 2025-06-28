@@ -1,0 +1,15 @@
+- **ports:**
+  - output port: `signal_out`
+- **state variables:**
+  - `time_advance`: initially set to 10 (to start sending signals after 10 seconds).
+  - `state`: initially set to `inactive` (indicating that the controller is not sending signals).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - change `state` to `active`.
+    - set `time_advance` to 1 (to send signals every second).
+  - **external transition function (delta_ext):**
+    - not applicable for this model since it does not receive any messages.
+  - **output function (lambda_out):**
+    - send an `on` signal to `signal_out` when transitioning from `inactive` to `active` and toggling every second thereafter.
+  - **confluent transition function (delta_conf):**
+    - execute the internal transition function and output function if a message arrives at the same time.

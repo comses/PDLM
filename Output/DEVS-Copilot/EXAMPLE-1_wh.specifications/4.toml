@@ -1,0 +1,130 @@
+# Atomic Model Definitions for Controllers
+[controller1]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 1
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller1.state.state]
+type = "string"
+initial_value = "on"
+
+[controller1.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller2]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 2
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller2.state.state]
+type = "string"
+initial_value = "on"
+
+[controller2.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller3]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 3
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller3.state.state]
+type = "string"
+initial_value = "on"
+
+[controller3.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller4]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 4
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller4.state.state]
+type = "string"
+initial_value = "on"
+
+[controller4.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller5]
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 5
+"""
+output_function = """
+send(out, state)
+"""
+
+[controller5.state.state]
+type = "string"
+initial_value = "on"
+
+[controller5.state.time_advance]
+type = "float"
+initial_value = 10
+
+# Atomic Model Definition for Light
+[light]
+in_ports = ["in1", "in2", "in3", "in4", "in5"]
+out_ports = []
+time_advance = inf
+external_transition_function = """
+if port_name == 'in1' or port_name == 'in2' or port_name == 'in3' or port_name == 'in4' or port_name == 'in5':
+    state = message
+"""
+
+[light.state.state]
+type = "string"
+initial_value = "off"
+
+[light.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+# Coupled Model for the entire system not explicitly defined as it would require a mechanism to handle multiple inputs to a single output which is beyond the scope of this specification.

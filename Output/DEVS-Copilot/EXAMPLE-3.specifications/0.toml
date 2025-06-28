@@ -1,0 +1,73 @@
+# Atomic Model for Controller
+["controller"]
+in_ports = []
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if state == "on":
+    state = "off"
+else:
+    state = "on"
+ta = time_advance
+"""
+output_function = """
+send(out, state)
+"""
+
+# State Variables for Controller
+["controller.state.state"]
+type = "string"
+initial_value = "off"
+
+["controller.state.time_advance"]
+type = "float"
+initial_value = 10
+
+# Atomic Model for Light
+["light"]
+in_ports = ["in"]
+out_ports = []
+time_advance = "inf"
+external_transition_function = """
+if port_name == "in":
+    if message == "on":
+        state = "on"
+    elif message == "off":
+        state = "off"
+"""
+
+# State Variables for Light
+["light.state.state"]
+type = "string"
+initial_value = "off"
+
+# Coupled Models from coupled1 to coupled5
+for i in range(1, 6):
+    coupled_name = f"coupled{i}"
+    controller_name = f"controller{i}"
+    light_name = f"light{i}"
+
+    # Coupled Model
+    f'''[{coupled_name}]
+    components = [
+        {{ model = "controller", name = "{controller_name}" }},
+        {{ model = "light", name = "{light_name}" }}
+    ]
+    '''
+
+    # Connections
+    f'''[[{coupled_name}.connections]]
+    source = "{controller_name}.out"
+    target = "{light_name}.in"
+    '''
+
+# Root Coupled Model
+["root"]
+components = [
+    { model = "coupled1", name = "coupled1" },
+    { model = "coupled2", name = "coupled2" },
+    { model = "coupled3", name = "coupled3" },
+    { model = "coupled4", name = "coupled4" },
+    { model = "coupled5", name = "coupled5" }
+]
+connections = []

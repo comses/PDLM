@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="off">
+    <outputFunctions OutputPort="signal_out">
+      <Message>off</Message>
+      <Action>signal_out.add(off)</Action>
+    </outputFunctions>
+  </states>
+  <states xsi:type="statechart:State" Name="on">
+    <outputFunctions OutputPort="signal_out">
+      <Message>on</Message>
+      <Action>signal_out.add(on)</Action>
+    </outputFunctions>
+  </states>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0"/>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="1.0" source="//@states.0" target="//@states.1">
+    <Action>Toggle state between on and off</Action>
+    <Action> set time_advance to 1 second</Action>
+    <Guard>state=off</Guard>
+  </transitions>
+  <transitions xsi:type="statechart:InternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="1.0" source="//@states.1" target="//@states.0">
+    <Action>Toggle state between on and off</Action>
+    <Action> set time_advance to 1 second</Action>
+    <Guard>state=on</Guard>
+  </transitions>
+</statechart:Model>

@@ -1,0 +1,44 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Atomic Model: Controller
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 10 (to start sending signals after 10 seconds).
+  - `state`: Initially set to `inactive` (indicating that the controller is not sending signals).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `active`.
+    - Set `time_advance` to 1 (to send signals every second).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an `on` signal to `signal_out` when transitioning from `inactive` to `active` and toggling every second thereafter.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Light
+- **Ports:**
+  - Input Port: `signal_in`
+- **State Variables:**
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Not applicable as the light state changes based on the incoming signal.
+  - **External Transition Function (delta_ext):**
+    - If an `on` signal is received at `signal_in`, change `state` to `on`.
+    - If an `off` signal is received at `signal_in`, change `state` to `off`.
+  - **Output Function (lambda_out):**
+    - Not applicable as the light does not output signals.
+  - **Confluent Transition Function (delta_conf):**
+    - Not applicable as the light state changes based solely on incoming signals.
+
+### Summary of Execution Flow
+1. The `Controller` starts sending signals after 10 seconds.
+2. The `Controller` toggles between sending `on` and `off` signals every second indefinitely.
+3. The `Light` changes its state based on the signals received from the `Controller`.
+
+### Important Notes
+- The `time_advance` for the `Controller` must be set to 10 initially to ensure it starts sending signals after the specified delay.
+- Ensure that the `Controller` continues to toggle its output state every second after the initial activation.
+- The `Light` model responds to incoming signals without any internal timing, as its state is driven solely by the controller's output.

@@ -1,0 +1,15 @@
+- **ports:**
+  - input port: `in`
+  - output port: `out`
+- **state variables:**
+  - `job_count`: initially set to 0 (to count the number of processed jobs).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - not applicable as the sensor does not have a periodic internal transition.
+  - **external transition function (delta_ext):**
+    - increment `job_count` by 1 when a processed job is received at `in`.
+    - if `job_count` reaches 5, generate a stop signal on `out`.
+  - **output function (lambda_out):**
+    - send a stop signal to `out` when `job_count` reaches 5.
+  - **confluent transition function (delta_conf):**
+    - execute the external transition function if a processed job arrives at the same time as the sensor is already counting.

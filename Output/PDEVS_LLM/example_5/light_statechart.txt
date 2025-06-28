@@ -1,0 +1,82 @@
+Model {
+    ConfluentType = FET
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "off"
+        OutputFunction {
+            Action = "sendState()"
+            Description = "Sends the 'off' state to status_out"
+            Guard = "" 
+            Message = "off" 
+            OutputPort = "status_out"
+        }
+    }
+
+    State { 
+        Name = "on"
+        OutputFunction {
+            Action = "sendState()"
+            Description = "Sends the 'on' state to status_out"
+            Guard = "" 
+            Message = "on" 
+            OutputPort = "status_out"
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = ""
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "off" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = "toggleState()"
+        Description = "Toggle state from on to off or off to on"
+        Guard = "" 
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+
+    InternalTransition {
+        Action = "toggleState()"
+        Description = "Toggle state from on to off or off to on"
+        Guard = "" 
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+
+    ExternalTransition {
+        Action = "setState('on')"
+        Description = "Set state to on if off when control signal is received"
+        Guard = "currentState='off'"
+        InputPort = "control_in"
+        Message = "on"
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+
+    ExternalTransition {
+        Action = "setState('off')"
+        Description = "Set state to off if on when control signal is received"
+        Guard = "currentState='on'"
+        InputPort = "control_in"
+        Message = "off"
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+}

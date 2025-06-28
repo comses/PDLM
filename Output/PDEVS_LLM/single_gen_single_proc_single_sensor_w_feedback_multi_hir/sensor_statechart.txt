@@ -1,0 +1,64 @@
+Model {
+    ConfluentType = FET
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "active"
+    }
+
+    State { 
+        Name = "signal_stop"
+        OutputFunction {
+            Action = "Send stop signal"
+            Description = "Send a stop signal to out when job_count reaches 5"
+            Guard = "" 
+            Message = "StopSignal" 
+            OutputPort = "out"
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "Initialize job_count to 0"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "active" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Increment job_count by 1"
+        Description = "Increment job_count when a processed job is received at in"
+        Guard = ""
+        InputPort = "in"
+        Message = "ProcessedJobReceived"
+        Source = "active"  
+        Target = "active"  
+        TimeAdvanceType = Update
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Increment job_count by 1, transition to signal_stop if job_count reaches 5"
+        Description = "Increment job_count, generate stop signal if job_count is 5"
+        Guard = "job_count=4"
+        InputPort = "in"
+        Message = "ProcessedJobReceived"
+        Source = "active"  
+        Target = "signal_stop"  
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 0.0
+    }
+
+    Transition {  
+        Action = "Reset job_count to 0"
+        Description = "Resetting job_count after sending stop signal"
+        Source = "signal_stop"  
+        Target = "active" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+}

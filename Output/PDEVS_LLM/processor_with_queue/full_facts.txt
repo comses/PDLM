@@ -1,0 +1,59 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: root
+- This is the root model that contains instances of the atomic models `Generator` and `Processor`.
+- **Ports:**
+  - Input Port: None (as this is the overall system and there is no hierarchy above this.)
+  - Output Port: None (as this is the overall system and there is no hierarchy above this.)
+- **Internal Couplings:**
+  - The `Generator` sends job signals to the `Processor`.
+  - The `Processor` outputs processed jobs.
+- **External Couplings:**
+  - None (as this is the overall system and there is no hierarchy above this.)
+
+### Atomic Model: Generator
+- **Ports:**
+  - Output Port: `job_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `job_count`: Initially set to 0 (to count the number of jobs sent).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Increment `job_count`.
+    - If `job_count` < 3, set `time_advance` to the next scheduled job time (11, 12, or 13 seconds).
+    - If `job_count` = 3, set `time_advance` to infinity (to stop sending jobs).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.  
+  - **Output Function (lambda_out):**    
+    - Send a job signal to `job_out` when `job_count` is 1, 2, or 3.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Processor
+- **Ports:**
+  - Input Port: `job_in`
+  - Output Port: `processed_job_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 2 (the processing time).
+  - `state`: Initially set to `idle` (indicating the processor is not busy).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `idle`.
+    - Set `time_advance` to 2 (to prepare for the next job).
+  - **External Transition Function (delta_ext):**
+    - If a job is received at `job_in`, change `state` to `busy` and set `time_advance` to 2 (indicating processing time).
+  - **Output Function (lambda_out):**
+    - Send a processed job signal to `processed_job_out` when transitioning from `busy` to `idle`.
+  - **Confluent Transition Function (delta_conf):**
+    - If a job is received while in `busy` state, process the job and immediately transition to `idle` after processing.
+
+### Summary of Execution Flow
+1. The `Generator` sends a job signal at 11, 12, and 13 seconds.
+2. The `Processor` processes the job for 2 seconds, transitioning to `busy` state during processing.
+3. Once processing is complete, the `Processor` transitions back to `idle` state and sends the processed job signal.
+4. If the `Processor` is busy and a new job arrives, it will wait until the processing is complete.
+
+### Important Notes
+- Ensure that the `time_advance` for the `Generator` is properly set to avoid an infinite loop. 
+- The `Processor` must not set its `time_advance` to 0 unless it is transitioning to `idle` to avoid infinite loops. 
+- The `lambda` keyword has been avoided in the output function naming.

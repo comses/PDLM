@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="waiting"/>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0">
+    <Action>job_count=0</Action>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Update" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.0" InputPort="in">
+    <Action>job_count=job_count+1</Action>
+    <Guard/>
+    <Message>processed_job</Message>
+  </transitions>
+</statechart:Model>

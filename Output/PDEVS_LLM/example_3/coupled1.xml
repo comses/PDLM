@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<model>
+  <compositeModel name="CoupledModel">
+    <coupling m1name="controller1" m1port="signal_out" m2name="light1" m2port="signal_in"/>
+    <coupling m1name="controller2" m1port="signal_out" m2name="light2" m2port="signal_in"/>
+    <coupling m1name="controller3" m1port="signal_out" m2name="light3" m2port="signal_in"/>
+    <coupling m1name="controller4" m1port="signal_out" m2name="light4" m2port="signal_in"/>
+    <coupling m1name="controller5" m1port="signal_out" m2name="light5" m2port="signal_in"/>
+    <coupling m1name="coupled1" m1port="signal_in1" m2name="controller1" m2port="signal_out"/>
+    <coupling m1name="coupled1" m1port="signal_in2" m2name="controller2" m2port="signal_out"/>
+    <coupling m1name="coupled1" m1port="signal_in3" m2name="controller3" m2port="signal_out"/>
+    <coupling m1name="coupled1" m1port="signal_in4" m2name="controller4" m2port="signal_out"/>
+    <coupling m1name="coupled1" m1port="signal_in5" m2name="controller5" m2port="signal_out"/>
+    <coupling m1name="light1" m1port="light_status_out" m2name="coupled1" m2port="light_status_out1"/>
+    <coupling m1name="light2" m1port="light_status_out" m2name="coupled1" m2port="light_status_out2"/>
+    <coupling m1name="light3" m1port="light_status_out" m2name="coupled1" m2port="light_status_out3"/>
+    <coupling m1name="light4" m1port="light_status_out" m2name="coupled1" m2port="light_status_out4"/>
+    <coupling m1name="light5" m1port="light_status_out" m2name="coupled1" m2port="light_status_out5"/>
+  </compositeModel>
+</model>

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<model>
+  <compositeModel name="CoupledModel">
+    <coupling m1name="light" m1port="light_status_out" m2name="sensor" m2port="light_status_in"/>
+    <coupling m1name="light-sensor" m1port="control" m2name="light" m2port="control_in"/>
+    <coupling m1name="sensor" m1port="stop_signal_out" m2name="light-sensor" m2port="stop"/>
+  </compositeModel>
+</model>

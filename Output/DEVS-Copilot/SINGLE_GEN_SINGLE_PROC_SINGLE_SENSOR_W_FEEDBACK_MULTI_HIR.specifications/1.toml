@@ -1,0 +1,104 @@
+# Processor Atomic Model
+[Processor]
+in_ports = ["in_1"]
+out_ports = ["out_1"]
+time_advance = "inf"
+internal_transition_function = """
+if queue:
+    queue.pop(0)
+    ta = 2
+else:
+    state = 'idle'
+    ta = float('inf')
+"""
+external_transition_function = """
+if port_name == 'in_1':
+    queue.append(message)
+    if state == 'idle':
+        state = 'busy'
+        ta = 2
+"""
+output_function = """
+send('out_1', 'processed_job')
+"""
+
+[Processor.state.queue]
+type = "list"
+initial_value = "[]"
+
+[Processor.state.state]
+type = "string"
+initial_value = "'idle'"
+
+[Processor.state.processing_time]
+type = "int"
+initial_value = "2"
+
+# Sensor Atomic Model
+[Sensor]
+in_ports = ["in"]
+out_ports = ["out"]
+time_advance = 0
+external_transition_function = """
+count += 1
+if count == 5:
+    prepare_stop_signal = True
+"""
+output_function = """
+if count == 5:
+    send('out', 'stop')
+"""
+
+[Sensor.state.count]
+type = "int"
+initial_value = "0"
+
+[Sensor.state.prepare_stop_signal]
+type = "bool"
+initial_value = "False"
+
+# Generator Atomic Model
+[Generator]
+in_ports = ["stop"]
+out_ports = ["out"]
+time_advance = 3
+internal_transition_function = """
+job_number += 1
+"""
+external_transition_function = """
+if port_name == 'stop':
+    state = 'passive'
+    ta = float('inf')
+"""
+output_function = """
+send('out', f'Job{job_number}')
+"""
+
+[Generator.state.job_number]
+type = "int"
+initial_value = "1"
+
+[Generator.state.state]
+type = "string"
+initial_value = "'active'"
+
+# Processor-Sensor Coupled Model
+[Processor_Sensor]
+components = [
+  { model = "Processor", name = "processor" },
+  { model = "Sensor", name = "sensor" }
+]
+connections = [
+  { source = "processor.out_1", target = "sensor.in" }
+]
+
+# Root Coupled Model
+[Root]
+components = [
+  { model = "Generator", name = "generator" },
+  { model = "Processor_Sensor", name = "processor_sensor" }
+]
+connections = [
+  { source = "generator.out", target = "processor_sensor.processor.in_1" },
+  { source = "processor_sensor.sensor.out", target = "generator.stop" }
+]

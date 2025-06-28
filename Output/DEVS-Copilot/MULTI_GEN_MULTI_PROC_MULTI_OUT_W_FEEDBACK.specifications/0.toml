@@ -1,0 +1,174 @@
+# Atomic Models
+
+# Generator_A
+[Generator_A]
+in_ports = ["stop"]
+out_ports = ["out"]
+time_advance = 3
+internal_transition_function = """
+if active:
+    count += 1
+"""
+external_transition_function = """
+if port_name == 'stop':
+    active = False
+    ta = float('inf')
+"""
+output_function = """
+send(out, 'JobA' + str(count))
+"""
+
+[Generator_A.state.count]
+type = "int"
+initial_value = 1
+
+[Generator_A.state.active]
+type = "int"
+initial_value = 1
+
+# Generator_B
+[Generator_B]
+in_ports = ["stop"]
+out_ports = ["out_1", "out_2"]
+time_advance = 6
+internal_transition_function = """
+if active:
+    count += 1
+"""
+external_transition_function = """
+if port_name == 'stop':
+    active = False
+    ta = float('inf')
+"""
+output_function = """
+send(out_1, 'JobB1' + str(count))
+send(out_2, 'JobB2' + str(count))
+"""
+
+[Generator_B.state.count]
+type = "int"
+initial_value = 1
+
+[Generator_B.state.active]
+type = "int"
+initial_value = 1
+
+# Processor
+[Processor]
+in_ports = ["in_1", "in_2"]
+out_ports = ["out_1", "out_2"]
+time_advance = "inf"
+internal_transition_function = """
+if busy:
+    busy = False
+    ta = float('inf')
+"""
+external_transition_function = """
+queue.append(message)
+if not busy:
+    busy = True
+    ta = processingTime
+"""
+output_function = """
+if 'JobA' in queue[0]:
+    send(out_1, queue.pop(0))
+elif 'JobB' in queue[0]:
+    send(out_2, queue.pop(0))
+"""
+
+[Processor.state.queue]
+type = "string"
+initial_value = "[]"
+
+[Processor.state.processingTime]
+type = "int"
+initial_value = 2
+
+[Processor.state.busy]
+type = "int"
+initial_value = 0
+
+# Sensor_A
+[Sensor_A]
+in_ports = ["in"]
+out_ports = ["out"]
+time_advance = "inf"
+internal_transition_function = """
+if count == 5:
+    count = 0
+    ta = 0
+"""
+external_transition_function = """
+count += 1
+if count == 5:
+    ta = 0
+"""
+output_function = """
+send(out, 'stop')
+"""
+
+[Sensor_A.state.count]
+type = "int"
+initial_value = 0
+
+# Sensor_B
+[Sensor_B]
+in_ports = ["in"]
+out_ports = ["out"]
+time_advance = "inf"
+internal_transition_function = """
+if count == 5:
+    count = 0
+    ta = 0
+"""
+external_transition_function = """
+count += 1
+if count == 5:
+    ta = 0
+"""
+output_function = """
+send(out, 'stop')
+"""
+
+[Sensor_B.state.count]
+type = "int"
+initial_value = 0
+
+# Coupled Model
+
+[root]
+components = [
+    { model = "Generator_A", name = "Generator_A" },
+    { model = "Generator_B", name = "Generator_B" },
+    { model = "Processor", name = "Processor" },
+    { model = "Sensor_A", name = "Sensor_A" },
+    { model = "Sensor_B", name = "Sensor_B" }
+]
+
+[[root.connections]]
+source = "Generator_A.out"
+target = "Processor.in_1"
+
+[[root.connections]]
+source = "Generator_B.out_1"
+target = "Processor.in_1"
+
+[[root.connections]]
+source = "Generator_B.out_2"
+target = "Processor.in_2"
+
+[[root.connections]]
+source = "Processor.out_1"
+target = "Sensor_A.in"
+
+[[root.connections]]
+source = "Processor.out_2"
+target = "Sensor_B.in"
+
+[[root.connections]]
+source = "Sensor_A.out"
+target = "Generator_A.stop"
+
+[[root.connections]]
+source = "Sensor_B.out"
+target = "Generator_B.stop"

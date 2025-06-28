@@ -1,0 +1,84 @@
+[Controller]
+in_ports = ["stop"]
+out_ports = ["control"]
+time_advance = 10
+
+[Controller.state.state]
+type = "bool"
+initial_value = "false"
+
+[Controller.state.time_advance]
+type = "float"
+initial_value = "10.0"
+
+internal_transition_function = """
+if state:
+    state = False
+else:
+    state = True
+ta = time_advance
+"""
+
+external_transition_function = """
+if port_name == 'stop':
+    state = False
+    ta = float('inf')
+"""
+
+output_function = """
+send('control', state)
+"""
+
+[Sensor]
+in_ports = ["cycle"]
+out_ports = ["feedback"]
+time_advance = "inf"
+
+[Sensor.state.count]
+type = "int"
+initial_value = "0"
+
+external_transition_function = """
+if port_name == 'cycle':
+    count += 1
+    if count >= 10:
+        ta = 0
+"""
+
+output_function = """
+if count >= 10:
+    send('feedback', 'stop')
+    count = 0
+"""
+
+[root]
+components = [
+  {model = "Controller", name = "Controller1"},
+  {model = "Controller", name = "Controller2"},
+  {model = "Controller", name = "Controller3"},
+  {model = "Sensor", name = "Sensor"}
+]
+
+[[root.connections]]
+source = "Controller1.control"
+target = "Sensor.cycle"
+
+[[root.connections]]
+source = "Controller2.control"
+target = "Sensor.cycle"
+
+[[root.connections]]
+source = "Controller3.control"
+target = "Sensor.cycle"
+
+[[root.connections]]
+source = "Sensor.feedback"
+target = "Controller1.stop"
+
+[[root.connections]]
+source = "Sensor.feedback"
+target = "Controller2.stop"
+
+[[root.connections]]
+source = "Sensor.feedback"
+target = "Controller3.stop"

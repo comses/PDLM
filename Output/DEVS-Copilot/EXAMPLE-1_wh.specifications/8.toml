@@ -1,0 +1,94 @@
+[controller]
+in_ports = ["feedback_in"]
+out_ports = ["control_out"]
+time_advance = 10
+internal_transition_function = """
+if state != 'stop':
+    if state == 'on':
+        state = 'off'
+    else:
+        state = 'on'
+    cycles += 0.5
+    if cycles >= 10:
+        state = 'stop'
+        ta = float('inf')
+    else:
+        ta = 1
+"""
+external_transition_function = """
+if message == 'stop':
+    state = 'stop'
+    ta = float('inf')
+"""
+output_function = """
+if state != 'stop':
+    send(control_out, state)
+"""
+
+[controller.state.state]
+type = "string"
+initial_value = "on"
+
+[controller.state.cycles]
+type = "float"
+initial_value = 0
+
+[controller.state.time_advance]
+type = "float"
+initial_value = 10
+
+[light]
+in_ports = ["control_in"]
+out_ports = ["status_out"]
+time_advance = inf
+external_transition_function = """
+state = message
+ta = 0
+"""
+output_function = """
+send(status_out, state)
+"""
+
+[light.state.state]
+type = "string"
+initial_value = "off"
+
+[light.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[sensor]
+in_ports = ["status_in"]
+out_ports = ["feedback_out"]
+time_advance = inf
+external_transition_function = """
+cycle_count += 0.5
+if cycle_count >= 10:
+    ta = 0
+else:
+    ta = inf
+"""
+output_function = """
+if cycle_count >= 10:
+    send(feedback_out, 'stop')
+"""
+
+[sensor.state.cycle_count]
+type = "float"
+initial_value = 0
+
+[sensor.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[root]
+components = [
+    { model = "controller", name = "controller_instance" },
+    { model = "light", name = "light_instance" },
+    { model = "sensor", name = "sensor_instance" }
+]
+connections = [
+    { source = "controller_instance.control_out", target = "light_instance.control_in" },
+    { source = "light_instance.status_out", target = "sensor_instance.status_in" },
+    { source = "sensor_instance.feedback_out", target = "controller_instance.feedback_in" }
+]
