@@ -1,0 +1,39 @@
+```
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "inactive" }
+
+    State { 
+        Name = "active"
+        OutputFunction { 
+            Action = "Toggle output signal"
+            Description = "Send 'on' signal to signal_out"
+            Guard = "" 
+            Message =  "on"
+            OutputPort = "signal_out" 
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "Set time_advance to 1"
+        Description = "Initializing the model"
+        Source = "inactive"  
+        Target = "active" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 10.0
+    }
+
+    InternalTransition {
+        Action = "Toggle state and reset time_advance"
+        Description = "active state self-transition"
+        Guard = "" 
+        Source = "active"  
+        Target = "active"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+}
+```

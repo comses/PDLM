@@ -1,0 +1,16 @@
+- **ports:**
+  - input port: `light_status_in`
+  - output port: `status_out`
+- **state variables:**
+  - `time_advance`: initially set to 0 (to allow immediate transitions).
+  - `state`: initially set to `off` (indicating the sensor detects the light is off).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - no state change, retains the last known state.
+    - set `time_advance` to 0 (to allow immediate transitions).
+  - **external transition function (delta_ext):**
+    - if a light status signal is received at `light_status_in`, update `state` to match the incoming signal ("on" or "off").
+  - **output function (lambda_out):**
+    - send the current `state` ("on" or "off") to `status_out` immediately after receiving a signal.
+  - **confluent transition function (delta_conf):**
+    - if a light status signal is received while in the middle of processing, update the state immediately.

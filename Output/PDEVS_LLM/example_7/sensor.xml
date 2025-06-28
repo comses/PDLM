@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<model>
+  <compositeModel name="CoupledModel">
+    <coupling m1name="controller1" m1port="signal_out" m2name="controller2" m2port="feedback_in"/>
+    <coupling m1name="controller2" m1port="signal_out" m2name="controller3" m2port="feedback_in"/>
+    <coupling m1name="SensorControlSystem" m1port="feedback_in" m2name="controller1" m2port="feedback_in"/>
+    <coupling m1name="controller3" m1port="signal_out" m2name="SensorControlSystem" m2port="signal_out"/>
+  </compositeModel>
+</model>

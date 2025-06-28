@@ -1,0 +1,84 @@
+```
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "off"
+        OutputFunction { 
+            Action = "Send the current state ('off') to status_out"
+            Description = "Output Function for state off"
+            Guard = "" 
+            Message =  "off"
+            OutputPort = "status_out" 
+        }
+    }
+
+    State { 
+        Name = "on"
+        OutputFunction { 
+            Action = "Send the current state ('on') to status_out"
+            Description = "Output Function for state on"
+            Guard = "" 
+            Message =  "on"
+            OutputPort = "status_out" 
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = ""
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "off" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Change state according to the received signal"
+        Description = "If a signal 'on' is received at signal_in, change state to 'on'"
+        Guard = "signal_in == 'on'"
+        InputPort = "signal_in"
+        Message = "on"
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Change state according to the received signal"
+        Description = "If a signal 'off' is received at signal_in, change state to 'off'"
+        Guard = "signal_in == 'off'"
+        InputPort = "signal_in"
+        Message = "off"
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = ""
+        Description = "Maintain current state, ready for next signal"
+        Guard = "" 
+        Source = "on"  
+        Target = "on"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = ""
+        Description = "Maintain current state, ready for next signal"
+        Guard = "" 
+        Source = "off"  
+        Target = "off"  
+        TimeAdvanceType = Infinity  
+        TimeAdvanceValue = 0.0
+    }
+}
+```

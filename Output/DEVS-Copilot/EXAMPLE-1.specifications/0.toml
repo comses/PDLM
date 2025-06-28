@@ -1,0 +1,49 @@
+[Controller]
+in_ports = []
+out_ports = ["out"]
+time_advance = 10
+internal_transition_function = """
+if status == "on":
+    status = "off"
+else:
+    status = "on"
+ta = 1
+"""
+output_function = """
+send(out, status)
+"""
+
+[Controller.state.status]
+type = "string"
+initial_value = "off"
+
+[Controller.state.time_advance]
+type = "float"
+initial_value = 10
+
+[Light]
+in_ports = ["in"]
+out_ports = []
+external_transition_function = """
+if port_name == "in":
+    status = message
+"""
+time_advance = inf
+
+[Light.state.status]
+type = "string"
+initial_value = "off"
+
+[Light.state.time_advance]
+type = "float"
+initial_value = float("inf")
+
+[Root]
+components = [
+    { model = "Controller", name = "controller1" },
+    { model = "Light", name = "light1" }
+]
+
+[[Root.connections]]
+source = "controller1.out"
+target = "light1.in"

@@ -1,0 +1,53 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "idle"
+    }
+
+    State { 
+        Name = "busy"
+        OutputFunction { 
+            Action = "Send processed job signal"
+            Description = "Send a processed job signal to processed_job_out"
+            Guard = "" 
+            Message =  "processed job signal"
+            OutputPort = "processed_job_out" 
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "Set time_advance to 2"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "idle" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 2.0
+    }
+
+    ExternalTransition {
+        Action = "Change state to busy"
+        Description = "idle to busy transition on job reception"
+        Guard = ""
+        InputPort = "job_in"
+        Message = "job signal"
+        Source = "idle"  
+        Target = "busy"  
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 2.0
+    }
+
+    InternalTransition {
+        Action = "Change state to idle"
+        Description = "busy to idle transition after processing"
+        Guard = "" 
+        Source = "busy"  
+        Target = "idle"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 2.0
+    }
+}

@@ -1,0 +1,69 @@
+[Controller]
+in_ports = []
+out_ports = ["cmd"]
+time_advance = 10
+internal_transition_function = """
+if state == 'on':
+    state = 'off'
+else:
+    state = 'on'
+ta = 1
+"""
+external_transition_function = """
+"""
+output_function = """
+send(cmd, state)
+"""
+
+[Controller.state.state]
+type = "string"
+initial_value = "off"
+
+[Light]
+in_ports = ["cmd"]
+out_ports = ["status"]
+time_advance = inf
+internal_transition_function = """
+"""
+external_transition_function = """
+if port_name == 'cmd':
+    state = message
+    ta = 0
+"""
+output_function = """
+send(status, state)
+"""
+
+[Light.state.state]
+type = "string"
+initial_value = "off"
+
+[Sensor]
+in_ports = ["status"]
+out_ports = []
+time_advance = inf
+internal_transition_function = """
+"""
+external_transition_function = """
+if port_name == 'status':
+    state = message
+"""
+
+[Sensor.state.state]
+type = "string"
+initial_value = "off"
+
+[Root]
+components = [
+  { model = "Controller", name = "controller_instance" },
+  { model = "Light", name = "light_instance" },
+  { model = "Sensor", name = "sensor_instance" }
+]
+
+[[Root.connections]]
+source = "controller_instance.cmd"
+target = "light_instance.cmd"
+
+[[Root.connections]]
+source = "light_instance.status"
+target = "sensor_instance.status"

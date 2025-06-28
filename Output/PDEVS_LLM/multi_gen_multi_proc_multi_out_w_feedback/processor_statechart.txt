@@ -1,0 +1,74 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "idle"
+    }
+
+    State { 
+        Name = "busy"
+    }
+
+    // Transitions
+    Transition {  
+        Action = "job_queue.init(),time_advance=2"
+        Description = "Initializing the model and job queue"
+        Source = "start"  
+        Target = "idle" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 2.0
+    }
+
+    InternalTransition {
+        Action = "if job_queue.empty() then state=idle else job_queue.process(),time_advance=2"
+        Description = "Process next job and set time_advance to 2 if jobs remain"
+        Guard = "job_queue.length()>0" 
+        Source = "busy"  
+        Target = "busy"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 2.0
+    }
+
+    ExternalTransition {
+        Action = "job_queue.add(job), if state=idle then state=busy,time_advance=2"
+        Description = "Add incoming jobs to queue and set state to busy if idle"
+        Guard = ""
+        InputPort = "in_1"
+        Message = "job"
+        Source = "idle"  
+        Target = "busy"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 2.0
+    }
+
+    ExternalTransition {
+        Action = "job_queue.add(job), if state=idle then state=busy,time_advance=2"
+        Description = "Add incoming jobs to queue and set state to busy if idle"
+        Guard = ""
+        InputPort = "in_2"
+        Message = "job"
+        Source = "idle"  
+        Target = "busy"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 2.0
+    }
+
+    OutputFunction { 
+        Action = ""
+        Description = "Send processed job to out_1 if it was from in_1"
+        Guard = "job.origin=in_1" 
+        Message = "processed_job" 
+        OutputPort = "out_1" 
+    }
+
+    OutputFunction { 
+        Action = ""
+        Description = "Send processed job to out_2 if it was from in_2"
+        Guard = "job.origin=in_2" 
+        Message = "processed_job" 
+        OutputPort = "out_2" 
+    }
+}

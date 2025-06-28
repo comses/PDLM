@@ -1,0 +1,70 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: Light-Sensor
+- This is the coupled model that contains the details about the Light-Sensor system.
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **Internal Couplings:**
+  - The output port of the `Light` component is connected to the input port of the `Sensor`.
+- **External Couplings:**
+  - The `in` port of the `Light-Sensor` coupled model is connected to the input port of the `Light` component.
+  - The output port of the `Sensor` component is connected to the `out` port of the `Light-Sensor` component.
+
+### Atomic Model: Light
+- **Ports:**
+  - Input Port: `control_in`
+  - Output Port: `light_status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 1 (to allow toggling every second).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Toggle the `state` between `on` and `off`.
+    - Set `time_advance` to 1 (to prepare for the next toggle).
+  - **External Transition Function (delta_ext):**
+    - If a control signal is received at `control_in`, toggle the `state` accordingly.
+  - **Output Function (lambda_out):**
+    - Send the current `state` to `light_status_out` whenever the state changes.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Sensor
+- **Ports:**
+  - Input Port: `light_status_in`
+  - Output Port: `stop_signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to infinity (waiting for light status).
+  - `toggle_count`: Initially set to 0 (to count the number of cycles).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Not applicable as the sensor is waiting for input.
+  - **External Transition Function (delta_ext):**
+    - If a light status is received at `light_status_in`, increment `toggle_count`.
+    - If `toggle_count` reaches 10, send a stop signal through `stop_signal_out` and set `time_advance` to infinity.
+  - **Output Function (lambda_out):**
+    - Send a stop signal to `stop_signal_out` when `toggle_count` reaches 10.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the external transition function and output function if a message arrives at the same time.
+
+### Coupled Model: Root
+- This is the coupled model that contains the details about the overall system.
+- **Ports:**
+  - Input Port: None (as this is the overall system and there is no hierarchy above this.)
+  - Output Port: None (as this is the overall system and there is no hierarchy above this.)
+- **Internal Couplings:**
+  - The output port of the `Light` component is connected to the input port of the `Sensor`.
+  - The output port of the `Sensor` component is connected to the input port of the `Controller`.
+- **External Couplings:**
+  - The `in` port of the `Light-Sensor` coupled model is connected to the input port of the `Controller`.
+
+### Summary of Execution Flow
+1. The `Controller` sends on and off signals to the `Light` every second, starting 10 seconds after the simulation begins.
+2. The `Light` toggles its state between `on` and `off` and sends the current state to the `Sensor`.
+3. The `Sensor` counts the number of toggles and sends a stop signal to the `Controller` after 10 cycles.
+4. Upon receiving the stop signal, the `Controller` will turn off the `Light` and stop sending further commands.
+
+### Important Notes
+- Ensure that the `time_advance` for the `Light` is properly set to avoid an infinite loop.
+- The `Sensor` must not set its `time_advance` to 0 unless it is transitioning to a final state to avoid infinite loops.
+- The `lambda` keyword has been avoided in the output function naming.

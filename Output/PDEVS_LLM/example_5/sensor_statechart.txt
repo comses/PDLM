@@ -1,0 +1,62 @@
+Model {
+    ConfluentType = FET
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "off"
+        OutputFunction {
+            Action = "sendState('off')"
+            Description = "Sends the 'off' state to status_out"
+            Guard = "" 
+            Message = "off" 
+            OutputPort = "status_out"
+        }
+    }
+
+    State { 
+        Name = "on"
+        OutputFunction {
+            Action = "sendState('on')"
+            Description = "Sends the 'on' state to status_out"
+            Guard = "" 
+            Message = "on" 
+            OutputPort = "status_out"
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = ""
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "off" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "updateState(message)"
+        Description = "Updates state to match incoming signal"
+        Guard = ""
+        InputPort = "light_status_in"
+        Message = ""
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "updateState(message)"
+        Description = "Updates state to match incoming signal"
+        Guard = ""
+        InputPort = "light_status_in"
+        Message = ""
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 0.0
+    }
+}

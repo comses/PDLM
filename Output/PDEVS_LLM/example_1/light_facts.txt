@@ -1,0 +1,14 @@
+- **ports:**
+  - input port: `signal_in`
+- **state variables:**
+  - `state`: initially set to `off` (indicating the light is off).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - not applicable as the light state changes based on the incoming signal.
+  - **external transition function (delta_ext):**
+    - if an `on` signal is received at `signal_in`, change `state` to `on`.
+    - if an `off` signal is received at `signal_in`, change `state` to `off`.
+  - **output function (lambda_out):**
+    - not applicable as the light does not output signals.
+  - **confluent transition function (delta_conf):**
+    - not applicable as the light state changes based solely on incoming signals.

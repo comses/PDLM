@@ -1,0 +1,16 @@
+- **ports:**
+  - input port: `job_in`
+  - output port: `processed_job_out`
+- **state variables:**
+  - `time_advance`: initially set to 2 (the processing time).
+  - `state`: initially set to `idle` (indicating the processor is not busy).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - change `state` to `idle`.
+    - set `time_advance` to 2 (to prepare for the next job).
+  - **external transition function (delta_ext):**
+    - if a job is received at `job_in`, change `state` to `busy` and set `time_advance` to 2 (indicating processing time).
+  - **output function (lambda_out):**
+    - send a processed job signal to `processed_job_out` when transitioning from `busy` to `idle`.
+  - **confluent transition function (delta_conf):**
+    - if a job is received while in `busy` state, process the job and immediately transition to `idle` after processing.

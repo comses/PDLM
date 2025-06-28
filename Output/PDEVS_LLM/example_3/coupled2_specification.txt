@@ -1,0 +1,36 @@
+Coupled Model {
+    Name = "coupled2"
+
+    ModelInPortList{
+    }
+
+    ModelOutPortList{
+    }
+
+    Component {
+        Name = "coupled1"
+        InPortList {
+            InPort { Name = "signal_in1" }
+            InPort { Name = "signal_in2" }
+            InPort { Name = "signal_in3" }
+            InPort { Name = "signal_in4" }
+            InPort { Name = "signal_in5" }
+        }
+        OutPortList {
+            OutPort { Name = "light_status_out1" }
+            OutPort { Name = "light_status_out2" }
+            OutPort { Name = "light_status_out3" }
+            OutPort { Name = "light_status_out4" }
+            OutPort { Name = "light_status_out5" }
+        }
+    }
+
+    InternalCouplingList{
+    }
+
+    ExternalInputCouplingList{
+    }
+
+    ExternalOutputCouplingList{
+    }
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<statechart:Model xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statechart="http://statechart/1.0" xmi:version="2.0">
+  <initialState Name="start" Description="" outgoing="//@transitions.0"/>
+  <states xsi:type="statechart:State" Name="active"/>
+  <states xsi:type="statechart:State" Name="signal_stop">
+    <outputFunctions OutputPort="out">
+      <Message>StopSignal</Message>
+      <Action>Send stop signal</Action>
+    </outputFunctions>
+  </states>
+  <transitions xsi:type="statechart:Transition" source="//@initialState" target="//@states.0">
+    <Action>Initialize job_count to 0</Action>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Update" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.0" InputPort="in">
+    <Action>Increment job_count by 1</Action>
+    <Guard/>
+    <Message>ProcessedJobReceived</Message>
+  </transitions>
+  <transitions xsi:type="statechart:ExternalTransition" TimeAdvanceType="Value" TimeAdvanceValue="0.0" source="//@states.0" target="//@states.1" InputPort="in">
+    <Action>Increment job_count by 1</Action>
+    <Action> transition to signal_stop if job_count reaches 5</Action>
+    <Guard>job_count=4</Guard>
+    <Message>ProcessedJobReceived</Message>
+  </transitions>
+  <transitions xsi:type="statechart:Transition" source="//@states.1" target="//@states.0">
+    <Action>Reset job_count to 0</Action>
+  </transitions>
+</statechart:Model>

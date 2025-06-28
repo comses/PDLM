@@ -1,0 +1,88 @@
+[Controller]
+in_ports = ["feedback"]
+out_ports = ["command"]
+time_advance = 10.0
+internal_transition_function = """
+if cycle_count <= 10:
+    light_state = not light_state
+    cycle_count += 1
+    ta = 1.0
+else:
+    ta = float('inf')
+"""
+external_transition_function = """
+if cycle_count == 10:
+    light_state = False
+    ta = 0
+"""
+output_function = """
+send(command, 'on' if light_state else 'off')
+"""
+
+[Controller.state.cycle_count]
+type = "int"
+initial_value = 0
+
+[Controller.state.light_state]
+type = "bool"
+initial_value = "False"
+
+[Light]
+in_ports = ["control"]
+out_ports = ["status"]
+time_advance = "inf"
+external_transition_function = """
+if message == 'on':
+    state = True
+elif message == 'off':
+    state = False
+ta = 0
+"""
+output_function = """
+send(status, state)
+"""
+
+[Light.state.state]
+type = "bool"
+initial_value = "False"
+
+[Sensor]
+in_ports = ["light_status"]
+out_ports = ["control_feedback"]
+time_advance = "inf"
+external_transition_function = """
+count += 1
+if count == 20:
+    ta = 0
+"""
+output_function = """
+send(control_feedback, 'stop')
+"""
+
+[Sensor.state.count]
+type = "int"
+initial_value = 0
+
+[[Root.component]]
+model = "Controller"
+name = "controller_instance"
+
+[[Root.component]]
+model = "Light"
+name = "light_instance"
+
+[[Root.component]]
+model = "Sensor"
+name = "sensor_instance"
+
+[[Root.connections]]
+source = "controller_instance.command"
+target = "light_instance.control"
+
+[[Root.connections]]
+source = "light_instance.status"
+target = "sensor_instance.light_status"
+
+[[Root.connections]]
+source = "sensor_instance.control_feedback"
+target = "controller_instance.feedback"

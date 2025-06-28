@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<model>
+  <compositeModel name="CoupledModel">
+    <coupling m1name="generator" m1port="out" m2name="processor-sensor" m2port="start"/>
+    <coupling m1name="processor-sensor" m1port="stop" m2name="generator" m2port="stop"/>
+    <coupling m1name="root" m1port="start" m2name="generator" m2port="stop"/>
+    <coupling m1name="generator" m1port="out" m2name="root" m2port="stop"/>
+  </compositeModel>
+</model>

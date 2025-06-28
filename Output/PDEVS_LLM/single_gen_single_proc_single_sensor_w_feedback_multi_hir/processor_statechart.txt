@@ -1,0 +1,75 @@
+Model {
+    ConfluentType = FET
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "idle"
+    }
+
+    State { 
+        Name = "busy"
+        OutputFunction {
+            Action = "Send processed job signal"
+            Description = "Send a processed job signal to out_1"
+            Guard = "" 
+            Message = "ProcessedJob" 
+            OutputPort = "out_1"
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "Initialize job_queue and set time_advance to 2"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "idle" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Add job to job_queue, If idle set state to busy and time_advance to 2"
+        Description = "Receiving job at in"
+        Guard = ""
+        InputPort = "in"
+        Message = "JobReceived"
+        Source = "idle"  
+        Target = "busy"  
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 2.0
+    }
+
+    ExternalTransition {
+        Action = "Add job to job_queue"
+        Description = "Receiving job at in while busy"
+        Guard = "state=busy"
+        InputPort = "in"
+        Message = "JobReceived"
+        Source = "busy"  
+        Target = "busy"  
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 2.0
+    }
+
+    InternalTransition {
+        Action = "If job_queue is empty, change state to idle. Else process next job and set time_advance to 2"
+        Description = "Transition from busy to idle or stay busy"
+        Guard = "" 
+        Source = "busy"  
+        Target = "idle"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 2.0
+    }
+
+    InternalTransition {
+        Action = "Process job and immediately transition to idle after processing"
+        Description = "Processing job received while in busy state"
+        Guard = "state=busy && job_queue.isNotEmpty()" 
+        Source = "busy"  
+        Target = "idle"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 2.0
+    }
+}

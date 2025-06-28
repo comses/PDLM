@@ -1,0 +1,82 @@
+# Controller Atomic Model Template
+[controller]
+out_ports = ["out"]
+time_advance = 10
+
+# Internal Transition Function for Controller
+internal_transition_function = """
+if status == 'on':
+    status = 'off'
+else:
+    status = 'on'
+if name == 'controller1':
+    ta = 1
+elif name == 'controller2':
+    ta = 2
+elif name == 'controller3':
+    ta = 3
+elif name == 'controller4':
+    ta = 4
+elif name == 'controller5':
+    ta = 5
+"""
+
+# Output Function for Controller
+output_function = """
+send(out, status)
+"""
+
+# State Variables for Controller
+[controller.state.status]
+type = "string"
+initial_value = "off"
+
+[controller.state.time_advance]
+type = "float"
+initial_value = 10
+
+# Light Atomic Model
+[light]
+in_ports = ["in"]
+time_advance = "inf"
+
+# External Transition Function for Light
+external_transition_function = """
+status = message
+"""
+
+# State Variables for Light
+[light.state.status]
+type = "string"
+initial_value = "off"
+
+# Root Coupled Model
+[root]
+components = [
+    { model = "controller", name = "controller1" },
+    { model = "controller", name = "controller2" },
+    { model = "controller", name = "controller3" },
+    { model = "controller", name = "controller4" },
+    { model = "controller", name = "controller5" },
+    { model = "light", name = "light" }
+]
+
+[[root.connections]]
+source = "controller1.out"
+target = "light.in"
+
+[[root.connections]]
+source = "controller2.out"
+target = "light.in"
+
+[[root.connections]]
+source = "controller3.out"
+target = "light.in"
+
+[[root.connections]]
+source = "controller4.out"
+target = "light.in"
+
+[[root.connections]]
+source = "controller5.out"
+target = "light.in"

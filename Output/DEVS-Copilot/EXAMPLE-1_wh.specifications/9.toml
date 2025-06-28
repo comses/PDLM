@@ -1,0 +1,176 @@
+# Controller Atomic Models
+[controller1]
+in_ports = ["feedback_in"]
+out_ports = ["control_out"]
+time_advance = 10
+internal_transition_function = """
+if state != 'stop':
+    state = 'off' if state == 'on' else 'on'
+    ta = 1
+"""
+external_transition_function = """
+if message == 'stop':
+    state = 'stop'
+    ta = float('inf')
+"""
+output_function = """
+if state != 'stop':
+    send(control_out, state)
+"""
+
+[controller1.state.state]
+type = "string"
+initial_value = "on"
+
+[controller1.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller2]
+in_ports = ["feedback_in"]
+out_ports = ["control_out"]
+time_advance = 10
+internal_transition_function = """
+if state != 'stop':
+    state = 'off' if state == 'on' else 'on'
+    ta = 2
+"""
+external_transition_function = """
+if message == 'stop':
+    state = 'stop'
+    ta = float('inf')
+"""
+output_function = """
+if state != 'stop':
+    send(control_out, state)
+"""
+
+[controller2.state.state]
+type = "string"
+initial_value = "on"
+
+[controller2.state.time_advance]
+type = "float"
+initial_value = 10
+
+[controller3]
+in_ports = ["feedback_in"]
+out_ports = ["control_out"]
+time_advance = 10
+internal_transition_function = """
+if state != 'stop':
+    state = 'off' if state == 'on' else 'on'
+    ta = 3
+"""
+external_transition_function = """
+if message == 'stop':
+    state = 'stop'
+    ta = float('inf')
+"""
+output_function = """
+if state != 'stop':
+    send(control_out, state)
+"""
+
+[controller3.state.state]
+type = "string"
+initial_value = "on"
+
+[controller3.state.time_advance]
+type = "float"
+initial_value = 10
+
+# Light Atomic Models
+[light1]
+in_ports = ["control_in"]
+out_ports = ["status_out"]
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light1.state.state]
+type = "string"
+initial_value = "off"
+
+[light1.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[light2]
+in_ports = ["control_in"]
+out_ports = ["status_out"]
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light2.state.state]
+type = "string"
+initial_value = "off"
+
+[light2.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+[light3]
+in_ports = ["control_in"]
+out_ports = ["status_out"]
+time_advance = inf
+external_transition_function = """
+state = message
+"""
+
+[light3.state.state]
+type = "string"
+initial_value = "off"
+
+[light3.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+# Sensor Atomic Model
+[sensor]
+in_ports = ["status_in1", "status_in2", "status_in3"]
+out_ports = ["feedback_out"]
+time_advance = inf
+external_transition_function = """
+cycle_count += 0.5
+if cycle_count >= 10:
+    ta = 0
+"""
+output_function = """
+if cycle_count >= 10:
+    send(feedback_out, 'stop')
+"""
+
+[sensor.state.cycle_count]
+type = "float"
+initial_value = 0
+
+[sensor.state.time_advance]
+type = "float"
+initial_value = "inf"
+
+# Root Coupled Model
+[root]
+components = [
+    { model = "controller1", name = "controller1_instance" },
+    { model = "controller2", name = "controller2_instance" },
+    { model = "controller3", name = "controller3_instance" },
+    { model = "light1", name = "light1_instance" },
+    { model = "light2", name = "light2_instance" },
+    { model = "light3", name = "light3_instance" },
+    { model = "sensor", name = "sensor_instance" }
+]
+connections = [
+    { source = "controller1_instance.control_out", target = "light1_instance.control_in" },
+    { source = "controller2_instance.control_out", target = "light2_instance.control_in" },
+    { source = "controller3_instance.control_out", target = "light3_instance.control_in" },
+    { source = "light1_instance.status_out", target = "sensor_instance.status_in1" },
+    { source = "light2_instance.status_out", target = "sensor_instance.status_in2" },
+    { source = "light3_instance.status_out", target = "sensor_instance.status_in3" },
+    { source = "sensor_instance.feedback_out", target = "controller1_instance.feedback_in" },
+    { source = "sensor_instance.feedback_out", target = "controller2_instance.feedback_in" },
+    { source = "sensor_instance.feedback_out", target = "controller3_instance.feedback_in" }
+]

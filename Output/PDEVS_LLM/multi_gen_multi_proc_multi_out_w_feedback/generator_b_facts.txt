@@ -1,0 +1,19 @@
+- **ports:**
+  - input port: `stop`
+  - output ports: `out_1`, `out_2`
+- **state variables:**
+  - `time_advance`: initially set to 6 (for periodic job generation).
+  - `job_count_1`: initially set to 0 (to count jobs generated from `out_1`).
+  - `job_count_2`: initially set to 0 (to count jobs generated from `out_2`).
+  - `state`: initially set to `active`.
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - increment `job_count_1` and generate job as `jobb1{job_count_1+1}` for `out_1`.
+    - increment `job_count_2` and generate job as `jobb2{job_count_2+1}` for `out_2`.
+    - set `time_advance` to 6 (to schedule next job generation).
+  - **external transition function (delta_ext):**
+    - if a stop signal is received, set `state` to `passive` and `time_advance` to infinity (to stop job generation).
+  - **output function (lambda_out):**
+    - send the generated jobs to `out_1` and `out_2` when jobs are generated.
+  - **confluent transition function (delta_conf):**
+    - if a stop signal is received while generating jobs, stop job generation and transition to `passive`.

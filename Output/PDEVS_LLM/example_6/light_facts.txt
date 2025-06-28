@@ -1,0 +1,16 @@
+- **ports:**
+  - input port: `control_in`
+  - output port: `light_status_out`
+- **state variables:**
+  - `time_advance`: initially set to 1 (to allow toggling every second).
+  - `state`: initially set to `off` (indicating the light is off).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - toggle the `state` between `on` and `off`.
+    - set `time_advance` to 1 (to prepare for the next toggle).
+  - **external transition function (delta_ext):**
+    - if a control signal is received at `control_in`, toggle the `state` accordingly.
+  - **output function (lambda_out):**
+    - send the current `state` to `light_status_out` whenever the state changes.
+  - **confluent transition function (delta_conf):**
+    - execute the internal transition function and output function if a message arrives at the same time.

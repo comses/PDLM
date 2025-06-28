@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<model>
+  <compositeModel name="CoupledModel">
+    <coupling m1name="generator_a" m1port="out" m2name="processor" m2port="in_1"/>
+    <coupling m1name="generator_b" m1port="out_1" m2name="processor" m2port="in_1"/>
+    <coupling m1name="generator_b" m1port="out_2" m2name="processor" m2port="in_2"/>
+    <coupling m1name="processor" m1port="out_1" m2name="sensor_a" m2port="in"/>
+    <coupling m1name="processor" m1port="out_2" m2name="sensor_b" m2port="in"/>
+    <coupling m1name="sensor_a" m1port="out" m2name="generator_a" m2port="stop"/>
+    <coupling m1name="sensor_b" m1port="out" m2name="generator_b" m2port="stop"/>
+  </compositeModel>
+</model>

@@ -1,0 +1,19 @@
+- **ports:**
+  - input port: `feedback_in`
+  - output port: `signal_out`
+- **state variables:**
+  - `time_advance`: initially set to 1 (for toggling every second).
+  - `state`: initially set to `off` (indicating the light is off).
+  - `toggle_count`: initially set to 0 (to count the number of toggles).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - if `state` is `on`, set `state` to `off`.
+    - if `state` is `off`, set `state` to `on`.
+    - increment `toggle_count`.
+    - set `time_advance` to 1 (to continue toggling).
+  - **external transition function (delta_ext):**
+    - if a feedback message is received on `feedback_in`, set `state` to `off` and set `time_advance` to infinity (to stop toggling).
+  - **output function (lambda_out):**
+    - send a signal to `signal_out` when toggling occurs (when transitioning between `on` and `off`).
+  - **confluent transition function (delta_conf):**
+    - if a feedback message is received while toggling, stop toggling and turn the light off.

@@ -1,0 +1,129 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: Controller-Lights
+- This is the coupled model that contains the details about the Controller and the five Lights system.
+- **Ports:**
+  - Input Port: None (as this is the overall system and there is no hierarchy above this.)
+  - Output Port: None (as this is the overall system and there is no hierarchy above this.)
+- **Internal Couplings:**
+  - The output port of the `Controller` component is connected to the input ports of `Light1`, `Light2`, `Light3`, `Light4`, and `Light5`.
+- **External Couplings:**
+  - None (as there are no Ports for this coupled model).
+
+### Atomic Model: Controller
+- **Ports:**
+  - Output Port: `signal_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 10 (to start the toggling after 10 seconds).
+  - `state`: Initially set to `idle` (indicating the controller is not sending signals).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `idle`.
+    - Set `time_advance` to 1 (to toggle every second).
+  - **External Transition Function (delta_ext):**
+    - Not applicable for this model since it does not receive any messages.
+  - **Output Function (lambda_out):**
+    - Send an "on" signal to `signal_out` when transitioning from `idle` to active state (after 10 seconds).
+    - Toggle between "on" and "off" signals every second thereafter.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a message arrives at the same time.
+
+### Atomic Model: Light1
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it receives an "off" signal, or to `on` if it receives an "on" signal.
+    - Set `time_advance` to 0 (to allow immediate processing of the next signal).
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` to `on` if the signal is "on", or to `off` if the signal is "off".
+  - **Output Function (lambda_out):**
+    - Send the current state (`on` or `off`) to `status_out` whenever the state changes.
+  - **Confluent Transition Function (delta_conf):**
+    - If a signal is received while processing, change the state according to the received signal and immediately output the new state.
+
+### Atomic Model: Light2
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it receives an "off" signal, or to `on` if it receives an "on" signal.
+    - Set `time_advance` to 0 (to allow immediate processing of the next signal).
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` to `on` if the signal is "on", or to `off` if the signal is "off".
+  - **Output Function (lambda_out):**
+    - Send the current state (`on` or `off`) to `status_out` whenever the state changes.
+  - **Confluent Transition Function (delta_conf):**
+    - If a signal is received while processing, change the state according to the received signal and immediately output the new state.
+
+### Atomic Model: Light3
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it receives an "off" signal, or to `on` if it receives an "on" signal.
+    - Set `time_advance` to 0 (to allow immediate processing of the next signal).
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` to `on` if the signal is "on", or to `off` if the signal is "off".
+  - **Output Function (lambda_out):**
+    - Send the current state (`on` or `off`) to `status_out` whenever the state changes.
+  - **Confluent Transition Function (delta_conf):**
+    - If a signal is received while processing, change the state according to the received signal and immediately output the new state.
+
+### Atomic Model: Light4
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it receives an "off" signal, or to `on` if it receives an "on" signal.
+    - Set `time_advance` to 0 (to allow immediate processing of the next signal).
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` to `on` if the signal is "on", or to `off` if the signal is "off".
+  - **Output Function (lambda_out):**
+    - Send the current state (`on` or `off`) to `status_out` whenever the state changes.
+  - **Confluent Transition Function (delta_conf):**
+    - If a signal is received while processing, change the state according to the received signal and immediately output the new state.
+
+### Atomic Model: Light5
+- **Ports:**
+  - Input Port: `signal_in`
+  - Output Port: `status_out`
+- **State Variables:**
+  - `time_advance`: Initially set to 0 (to allow immediate transitions).
+  - `state`: Initially set to `off` (indicating the light is off).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Change `state` to `off` if it receives an "off" signal, or to `on` if it receives an "on" signal.
+    - Set `time_advance` to 0 (to allow immediate processing of the next signal).
+  - **External Transition Function (delta_ext):**
+    - If a signal is received at `signal_in`, change `state` to `on` if the signal is "on", or to `off` if the signal is "off".
+  - **Output Function (lambda_out):**
+    - Send the current state (`on` or `off`) to `status_out` whenever the state changes.
+  - **Confluent Transition Function (delta_conf):**
+    - If a signal is received while processing, change the state according to the received signal and immediately output the new state.
+
+### Summary of Execution Flow
+1. The `Controller` starts sending signals after 10 seconds, toggling between "on" and "off" every second.
+2. Each `Light` component (`Light1`, `Light2`, `Light3`, `Light4`, `Light5`) receives the signal from the `Controller` and updates its state accordingly.
+3. Each `Light` outputs its current state whenever it changes.
+
+### Important Notes
+- Ensure that the `time_advance` for the `Controller` is properly set to avoid an infinite loop.
+- The `Light` components must not set their `time_advance` to 0 unless they are transitioning to prevent infinite loops.
+- The `lambda` keyword has been avoided in the output function naming.

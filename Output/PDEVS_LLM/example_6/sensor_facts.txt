@@ -1,0 +1,16 @@
+- **ports:**
+  - input port: `light_status_in`
+  - output port: `stop_signal_out`
+- **state variables:**
+  - `time_advance`: initially set to infinity (waiting for light status).
+  - `toggle_count`: initially set to 0 (to count the number of cycles).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - not applicable as the sensor is waiting for input.
+  - **external transition function (delta_ext):**
+    - if a light status is received at `light_status_in`, increment `toggle_count`.
+    - if `toggle_count` reaches 10, send a stop signal through `stop_signal_out` and set `time_advance` to infinity.
+  - **output function (lambda_out):**
+    - send a stop signal to `stop_signal_out` when `toggle_count` reaches 10.
+  - **confluent transition function (delta_conf):**
+    - execute the external transition function and output function if a message arrives at the same time.

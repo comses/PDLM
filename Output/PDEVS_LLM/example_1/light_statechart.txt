@@ -1,0 +1,41 @@
+```
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "off" }
+
+    State { 
+        Name = "on"
+    }
+
+    State { 
+        Name = "off"
+    }
+
+    // Transitions
+    ExternalTransition {
+        Action = "Change state to on"
+        Description = "Transition to on state when 'on' signal is received"
+        Guard = "If 'on' signal is received"
+        InputPort = "signal_in"
+        Message = "on"
+        Source = "off"  
+        Target = "on"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "Change state to off"
+        Description = "Transition to off state when 'off' signal is received"
+        Guard = "If 'off' signal is received"
+        InputPort = "signal_in"
+        Message = "off"
+        Source = "on"  
+        Target = "off"  
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+}
+```

@@ -1,0 +1,117 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: Root
+- This is the root model that contains instances of the atomic models `Generator_A`, `Generator_B`, `Processor`, `Sensor_A`, and `Sensor_B`.
+- **Ports:**
+  - Input Port: None (as this is the overall system and there is no hierarchy above this.)
+  - Output Port: None (as this is the overall system and there is no hierarchy above this.)
+- **Internal Couplings:**
+  - The output port of `Generator_A` is connected to the input port `in_1` of `Processor`.
+  - The output port of `Generator_B` (`out_1`) is connected to the input port `in_1` of `Processor`.
+  - The output port of `Generator_B` (`out_2`) is connected to the input port `in_2` of `Processor`.
+  - The output port of `Processor` (`out_1`) is connected to the input port of `Sensor_A`.
+  - The output port of `Sensor_A` is connected to the input port of `Generator_A`.
+  - The output port of `Processor` (`out_2`) is connected to the input port of `Sensor_B`.
+  - The output port of `Sensor_B` is connected to the input port of `Generator_B`.
+- **External Couplings:**
+  - None (as this is the overall system and there are no external ports).
+
+### Atomic Model: Generator_A
+- **Ports:**
+  - Input Port: `stop`
+  - Output Port: `out`
+- **State Variables:**
+  - `time_advance`: Initially set to 3 (for periodic job generation).
+  - `job_count`: Initially set to 0 (to count the jobs generated).
+  - `state`: Initially set to `active`.
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Increment `job_count`.
+    - Generate job as `JobA{job_count+1}`.
+    - Set `time_advance` to 3 (to schedule next job generation).
+  - **External Transition Function (delta_ext):**
+    - If a stop signal is received, set `state` to `passive` and `time_advance` to infinity (to stop job generation).
+  - **Output Function (lambda_out):**
+    - Send the generated job signal to `out` when a job is generated.
+  - **Confluent Transition Function (delta_conf):**
+    - If a stop signal is received while generating a job, stop job generation and transition to `passive`.
+
+### Atomic Model: Generator_B
+- **Ports:**
+  - Input Port: `stop`
+  - Output Ports: `out_1`, `out_2`
+- **State Variables:**
+  - `time_advance`: Initially set to 6 (for periodic job generation).
+  - `job_count_1`: Initially set to 0 (to count jobs generated from `out_1`).
+  - `job_count_2`: Initially set to 0 (to count jobs generated from `out_2`).
+  - `state`: Initially set to `active`.
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Increment `job_count_1` and generate job as `JobB1{job_count_1+1}` for `out_1`.
+    - Increment `job_count_2` and generate job as `JobB2{job_count_2+1}` for `out_2`.
+    - Set `time_advance` to 6 (to schedule next job generation).
+  - **External Transition Function (delta_ext):**
+    - If a stop signal is received, set `state` to `passive` and `time_advance` to infinity (to stop job generation).
+  - **Output Function (lambda_out):**
+    - Send the generated jobs to `out_1` and `out_2` when jobs are generated.
+  - **Confluent Transition Function (delta_conf):**
+    - If a stop signal is received while generating jobs, stop job generation and transition to `passive`.
+
+### Atomic Model: Processor
+- **Ports:**
+  - Input Ports: `in_1`, `in_2`
+  - Output Ports: `out_1`, `out_2`
+- **State Variables:**
+  - `time_advance`: Initially set to 2 (the processing time).
+  - `state`: Initially set to `idle` (indicating the processor is not busy).
+  - `job_queue`: A queue to hold incoming jobs.
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - If there are no jobs in the queue, set `state` to `idle`.
+    - If there are jobs, process the next job, and if the queue is not empty, set `time_advance` to 2.
+  - **External Transition Function (delta_ext):**
+    - Add incoming jobs from `in_1` and `in_2` to the job queue.
+    - If jobs are added and the state is `idle`, set `state` to `busy` and `time_advance` to 2.
+  - **Output Function (lambda_out):**
+    - Send the processed job to `out_1` if it was from `in_1` and to `out_2` if it was from `in_2`.
+  - **Confluent Transition Function (delta_conf):**
+    - If jobs arrive while processing, add to the queue and continue processing the current job.
+
+### Atomic Model: Sensor_A
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **State Variables:**
+  - `job_count`: Initially set to 0 (to count the processed jobs).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Not applicable since this model waits for incoming jobs.
+  - **External Transition Function (delta_ext):**
+    - Increment `job_count` for each processed job received at `in`.
+    - If `job_count` reaches 5, send a stop signal on `out` to stop `Generator_A`.
+  - **Output Function (lambda_out):**
+    - Send a stop signal to `out` when `job_count` reaches 5.
+  - **Confluent Transition Function (delta_conf):**
+    - Not applicable since this model only reacts to incoming jobs.
+
+### Atomic Model: Sensor_B
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **State Variables:**
+  - `job_count`: Initially set to 0 (to count the processed jobs).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Not applicable since this model waits for incoming jobs.
+  - **External Transition Function (delta_ext):**
+    - Increment `job_count` for each processed job received at `in`.
+    - If `job_count` reaches 5, send a stop signal on `out` to stop `Generator_B`.
+  - **Output Function (lambda_out):**
+    - Send a stop signal to `out` when `job_count` reaches 5.
+  - **Confluent Transition Function (delta_conf):**
+    - Not applicable since this model only reacts to incoming jobs.
+
+### Important Notes
+- Ensure that the `time_advance` for both `Generator_A` and `Generator_B` is properly set to avoid infinite loops.
+- The `Processor` must handle jobs in a way to prevent its `time_advance` from being set to 0 unless it is transitioning to `idle`.
+- The `lambda` keyword has been avoided in the output function naming.

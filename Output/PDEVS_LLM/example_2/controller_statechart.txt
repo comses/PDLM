@@ -1,0 +1,60 @@
+```
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "idle"
+        OutputFunction { 
+            Action = "Toggle between 'on' and 'off'"
+            Description = "Send an 'on' signal to signal_out when transitioning from 'idle' to active state"
+            Guard = "" 
+            Message =  "on"
+            OutputPort = "signal_out" 
+        }
+    }
+
+    State { 
+        Name = "active"
+        OutputFunction { 
+            Action = "Toggle between 'on' and 'off'"
+            Description = "Toggle between 'on' and 'off' signals every second"
+            Guard = "" 
+            Message =  "Toggle"
+            OutputPort = "signal_out" 
+        }
+    }
+
+    // Transitions
+    Transition {  
+        Action = "Set time_advance to 10"
+        Description = "Initializing the model to start state"
+        Source = "start"  
+        Target = "idle" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 10.0
+    }
+
+    InternalTransition {
+        Action = "Change state to 'idle'; Set time_advance to 1"
+        Description = "idle state to active state transition; Toggle every second"
+        Guard = "" 
+        Source = "idle"  
+        Target = "active"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+
+    InternalTransition {
+        Action = "Toggle between 'on' and 'off'"
+        Description = "active state toggling signal"
+        Guard = "" 
+        Source = "active"  
+        Target = "active"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 1.0
+    }
+}
+```

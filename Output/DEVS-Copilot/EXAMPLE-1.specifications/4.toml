@@ -1,0 +1,47 @@
+# Controller Atomic Model
+[controller]
+in_ports = []
+out_ports = ["command"]
+time_advance = 10
+internal_transition_function = """
+if status == 'on':
+    status = 'off'
+    ta = 10
+else:
+    status = 'on'
+    ta = 10
+"""
+output_function = """
+send('command', status)
+"""
+
+# Controller State Variables
+[controller.state.status]
+type = "string"
+initial_value = "off"
+
+# Light Atomic Model
+[light]
+in_ports = ["control"]
+out_ports = []
+time_advance = "inf"
+external_transition_function = """
+if port_name == 'control':
+    status = message
+"""
+
+# Light State Variables
+[light.state.status]
+type = "string"
+initial_value = "off"
+
+# Coupled Model: Root
+[root]
+components = [
+    { model = "controller", name = "controller1"},
+    { model = "light", name = "light1"}
+]
+
+[[root.connections]]
+source = "controller1.command"
+target = "light1.control"

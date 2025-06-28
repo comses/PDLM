@@ -1,0 +1,26 @@
+Coupled Model {
+    Name = "coupled4"
+
+    ModelInPortList{
+    }
+
+    ModelOutPortList{
+    }
+
+    Component {
+        Name = "coupled3"
+        InPortList {
+        }
+        OutPortList {
+        }
+    }
+
+    InternalCouplingList{
+    }
+
+    ExternalInputCouplingList{
+    }
+
+    ExternalOutputCouplingList{
+    }
+}

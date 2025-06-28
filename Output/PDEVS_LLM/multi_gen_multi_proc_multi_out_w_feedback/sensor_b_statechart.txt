@@ -1,0 +1,40 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "monitoring"
+    }
+
+    // Transitions
+    Transition {  
+        Action = "job_count=0"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "monitoring" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    ExternalTransition {
+        Action = "job_count=job_count+1"
+        Description = "Increment job_count for each processed job received"
+        Guard = ""
+        InputPort = "in"
+        Message = "processed_job"
+        Source = "monitoring"  
+        Target = "monitoring"  
+        TimeAdvanceType = Update  
+        TimeAdvanceValue = 0.0
+    }
+
+    OutputFunction { 
+        Action = ""
+        Description = "Send stop signal to out when job_count reaches 5"
+        Guard = "job_count=5" 
+        Message = "stop_signal" 
+        OutputPort = "out" 
+    }
+}

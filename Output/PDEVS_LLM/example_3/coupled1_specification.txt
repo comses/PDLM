@@ -1,0 +1,204 @@
+Coupled Model {
+    Name = "coupled1"
+
+    ModelInPortList{
+        ModelInPort { Name = "signal_in1" }
+        ModelInPort { Name = "signal_in2" }
+        ModelInPort { Name = "signal_in3" }
+        ModelInPort { Name = "signal_in4" }
+        ModelInPort { Name = "signal_in5" }
+    }
+
+    ModelOutPortList{
+        ModelOutPort { Name = "light_status_out1" }
+        ModelOutPort { Name = "light_status_out2" }
+        ModelOutPort { Name = "light_status_out3" }
+        ModelOutPort { Name = "light_status_out4" }
+        ModelOutPort { Name = "light_status_out5" }
+    }
+
+    Component {
+        Name = "controller1"
+        InPortList {
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+    Component {
+        Name = "light1"
+        InPortList {
+            InPort { Name = "signal_in" }
+        }
+        OutPortList {
+            OutPort { Name = "light_status_out" }
+        }
+    }
+    Component {
+        Name = "controller2"
+        InPortList {
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+    Component {
+        Name = "light2"
+        InPortList {
+            InPort { Name = "signal_in" }
+        }
+        OutPortList {
+            OutPort { Name = "light_status_out" }
+        }
+    }
+    Component {
+        Name = "controller3"
+        InPortList {
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+    Component {
+        Name = "light3"
+        InPortList {
+            InPort { Name = "signal_in" }
+        }
+        OutPortList {
+            OutPort { Name = "light_status_out" }
+        }
+    }
+    Component {
+        Name = "controller4"
+        InPortList {
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+    Component {
+        Name = "light4"
+        InPortList {
+            InPort { Name = "signal_in" }
+        }
+        OutPortList {
+            OutPort { Name = "light_status_out" }
+        }
+    }
+    Component {
+        Name = "controller5"
+        InPortList {
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+    Component {
+        Name = "light5"
+        InPortList {
+            InPort { Name = "signal_in" }
+        }
+        OutPortList {
+            OutPort { Name = "light_status_out" }
+        }
+    }
+
+    InternalCouplingList{
+        Coupling {
+            M1Name = "controller1"
+            M1Port = "signal_out"
+            M2Name = "light1"
+            M2Port = "signal_in"
+        }
+        Coupling {
+            M1Name = "controller2"
+            M1Port = "signal_out"
+            M2Name = "light2"
+            M2Port = "signal_in"
+        }
+        Coupling {
+            M1Name = "controller3"
+            M1Port = "signal_out"
+            M2Name = "light3"
+            M2Port = "signal_in"
+        }
+        Coupling {
+            M1Name = "controller4"
+            M1Port = "signal_out"
+            M2Name = "light4"
+            M2Port = "signal_in"
+        }
+        Coupling {
+            M1Name = "controller5"
+            M1Port = "signal_out"
+            M2Name = "light5"
+            M2Port = "signal_in"
+        }
+    }
+
+    ExternalInputCouplingList{
+        Coupling {
+            M1Name = "coupled1"
+            M1Port = "signal_in1"
+            M2Name = "controller1"
+            M2Port = "signal_out"
+        }
+        Coupling {
+            M1Name = "coupled1"
+            M1Port = "signal_in2"
+            M2Name = "controller2"
+            M2Port = "signal_out"
+        }
+        Coupling {
+            M1Name = "coupled1"
+            M1Port = "signal_in3"
+            M2Name = "controller3"
+            M2Port = "signal_out"
+        }
+        Coupling {
+            M1Name = "coupled1"
+            M1Port = "signal_in4"
+            M2Name = "controller4"
+            M2Port = "signal_out"
+        }
+        Coupling {
+            M1Name = "coupled1"
+            M1Port = "signal_in5"
+            M2Name = "controller5"
+            M2Port = "signal_out"
+        }
+    }
+
+    ExternalOutputCouplingList{
+        Coupling {
+            M1Name = "light1"
+            M1Port = "light_status_out"
+            M2Name = "coupled1"
+            M2Port = "light_status_out1"
+        }
+        Coupling {
+            M1Name = "light2"
+            M1Port = "light_status_out"
+            M2Name = "coupled1"
+            M2Port = "light_status_out2"
+        }
+        Coupling {
+            M1Name = "light3"
+            M1Port = "light_status_out"
+            M2Name = "coupled1"
+            M2Port = "light_status_out3"
+        }
+        Coupling {
+            M1Name = "light4"
+            M1Port = "light_status_out"
+            M2Name = "coupled1"
+            M2Port = "light_status_out4"
+        }
+        Coupling {
+            M1Name = "light5"
+            M1Port = "light_status_out"
+            M2Name = "coupled1"
+            M2Port = "light_status_out5"
+        }
+    }
+}

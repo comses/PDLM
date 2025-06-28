@@ -1,0 +1,95 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "job_count_0"
+    }
+
+    State { 
+        Name = "job_count_1"
+        OutputFunction { 
+            Action = "Send job signal"
+            Description = "Send a job signal to job_out"
+            Guard = "" 
+            Message =  "job signal"
+            OutputPort = "job_out" 
+        }
+    }
+
+    State { 
+        Name = "job_count_2"
+        OutputFunction { 
+            Action = "Send job signal"
+            Description = "Send a job signal to job_out"
+            Guard = "" 
+            Message =  "job signal"
+            OutputPort = "job_out" 
+        }
+    }
+
+    State { 
+        Name = "job_count_3"
+        OutputFunction { 
+            Action = "Send job signal"
+            Description = "Send a job signal to job_out"
+            Guard = "" 
+            Message =  "job signal"
+            OutputPort = "job_out" 
+        }
+    }
+
+    FinalState { Name = "stop" }
+
+    // Transitions
+    Transition {  
+        Action = ""
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "job_count_0" 
+        TimeAdvanceType = Infinity
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = "Increment job_count"
+        Description = "job_count_0 to job_count_1 transition"
+        Guard = "" 
+        Source = "job_count_0"  
+        Target = "job_count_1"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 11.0
+    }
+
+    InternalTransition {
+        Action = "Increment job_count"
+        Description = "job_count_1 to job_count_2 transition"
+        Guard = "" 
+        Source = "job_count_1"  
+        Target = "job_count_2"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 12.0
+    }
+
+    InternalTransition {
+        Action = "Increment job_count"
+        Description = "job_count_2 to job_count_3 transition"
+        Guard = "" 
+        Source = "job_count_2"  
+        Target = "job_count_3"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 13.0
+    }
+
+    InternalTransition {
+        Action = "Set time_advance to infinity"
+        Description = "Transition to stop sending jobs"
+        Guard = "job_count = 3" 
+        Source = "job_count_3"  
+        Target = "stop"  
+        TimeAdvanceType = Infinity  
+        TimeAdvanceValue = 0.0
+    }
+}

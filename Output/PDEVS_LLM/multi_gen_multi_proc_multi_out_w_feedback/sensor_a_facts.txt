@@ -1,0 +1,15 @@
+- **ports:**
+  - input port: `in`
+  - output port: `out`
+- **state variables:**
+  - `job_count`: initially set to 0 (to count the processed jobs).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - not applicable since this model waits for incoming jobs.
+  - **external transition function (delta_ext):**
+    - increment `job_count` for each processed job received at `in`.
+    - if `job_count` reaches 5, send a stop signal on `out` to stop `generator_a`.
+  - **output function (lambda_out):**
+    - send a stop signal to `out` when `job_count` reaches 5.
+  - **confluent transition function (delta_conf):**
+    - not applicable since this model only reacts to incoming jobs.

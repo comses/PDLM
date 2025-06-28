@@ -1,0 +1,15 @@
+- **ports:**
+  - output port: `signal_out`
+- **state variables:**
+  - `time_advance`: initially set to 0 (to allow immediate transitions).
+  - `state`: initially set to `off` (indicating the light is off).
+- **transition functions:**
+  - **internal transition function (delta_int):**
+    - toggle `state` between `on` and `off`.
+    - set `time_advance` to 2 seconds (to schedule the next toggle).
+  - **external transition function (delta_ext):**
+    - not applicable for this model since it does not receive any messages.
+  - **output function (lambda_out):**
+    - send the current `state` (either `on` or `off`) to `signal_out` after the internal transition.
+  - **confluent transition function (delta_conf):**
+    - execute the internal transition function and output function if a message arrives at the same time.

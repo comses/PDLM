@@ -1,0 +1,89 @@
+Here is the complete system description for the DEVS modelization of the given problem, following the DEVS specifications:
+
+### Coupled Model: Processor-Sensor
+- This is the coupled model that contains the details about the Processor and Sensor.
+- **Ports:**
+  - Input Port: `in_1`
+  - Output Port: `out_1`
+- **Internal Couplings:**
+  - The output port of `Processor` is connected to the input port of `Sensor`.
+- **External Couplings:**
+  - The `in_1` port of the `Processor-Sensor` coupled model is connected to the input port of the `Processor`.
+  - The output port of the `Sensor` component is connected to the `out_1` port of the `Processor-Sensor` coupled model.
+
+### Atomic Model: Processor
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out_1`
+- **State Variables:**
+  - `time_advance`: Initially set to 2 (the processing time).
+  - `state`: Initially set to `idle` (indicating the processor is not busy).
+  - `job_queue`: A queue to hold incoming jobs.
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - If `job_queue` is empty, change `state` to `idle`.
+    - If there are jobs in `job_queue`, process the next job and set `time_advance` to 2.
+  - **External Transition Function (delta_ext):**
+    - If a job is received at `in`, add it to `job_queue`.
+    - If the processor is idle, change `state` to `busy` and set `time_advance` to 2.
+  - **Output Function (lambda_out):**
+    - Send a processed job signal to `out_1` when transitioning from `busy` to `idle`.
+  - **Confluent Transition Function (delta_conf):**
+    - If a job is received while in `busy` state, process the job and immediately transition to `idle` after processing.
+
+### Atomic Model: Sensor
+- **Ports:**
+  - Input Port: `in`
+  - Output Port: `out`
+- **State Variables:**
+  - `job_count`: Initially set to 0 (to count the number of processed jobs).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Not applicable as the sensor does not have a periodic internal transition.
+  - **External Transition Function (delta_ext):**
+    - Increment `job_count` by 1 when a processed job is received at `in`.
+    - If `job_count` reaches 5, generate a stop signal on `out`.
+  - **Output Function (lambda_out):**
+    - Send a stop signal to `out` when `job_count` reaches 5.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the external transition function if a processed job arrives at the same time as the sensor is already counting.
+
+### Coupled Model: Root
+- This is the coupled model that contains the details about the overall system.
+- **Ports:**
+  - Input Port: `stop`
+  - Output Port: `out`
+- **Internal Couplings:**
+  - The output port of `Generator` is connected to the input port of `Processor-Sensor`.
+  - The output port of `Processor-Sensor` is connected to the input port of `Generator`.
+- **External Couplings:**
+  - None (as there are no additional ports for this coupled model).
+
+### Atomic Model: Generator
+- **Ports:**
+  - Input Port: `stop`
+  - Output Port: `out`
+- **State Variables:**
+  - `time_advance`: Initially set to 3 (the job generation interval).
+  - `job_count`: Initially set to 0 (to count the number of jobs generated).
+- **Transition Functions:**
+  - **Internal Transition Function (delta_int):**
+    - Increment `job_count` and prepare to generate the next job.
+    - If the `stop` signal is received, set `time_advance` to infinity (to stop generating jobs).
+  - **External Transition Function (delta_ext):**
+    - If a stop signal is received at `stop`, set `time_advance` to infinity and transition to a passive state.
+  - **Output Function (lambda_out):**
+    - Send a job signal to `out` when a job is generated.
+  - **Confluent Transition Function (delta_conf):**
+    - Execute the internal transition function and output function if a stop signal arrives at the same time as the internal transition.
+
+### Summary of Execution Flow
+1. The `Generator` produces jobs every 3 seconds until a stop signal is received.
+2. The `Processor` processes incoming jobs from the `Generator`, taking 2 seconds for each job.
+3. The `Sensor` counts the processed jobs and sends a stop signal after 5 jobs are processed.
+4. The `Generator` stops generating jobs upon receiving the stop signal from the `Sensor`.
+
+### Important Notes
+- Ensure that the `time_advance` for the `Generator` and `Processor` is properly set to avoid infinite loops.
+- The `Processor` must not set its `time_advance` to 0 unless it is transitioning to `idle` to avoid infinite loops.
+- The `lambda` keyword has been avoided in the output function naming.

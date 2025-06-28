@@ -1,0 +1,42 @@
+Coupled Model {
+    Name = "root"
+
+    ModelInPortList{
+        ModelInPort { Name = "root_control" }
+    }
+
+    ModelOutPortList{
+        ModelOutPort { Name = "root_stop" }
+    }
+
+    Component {
+        Name = "light-sensor"
+        InPortList {
+            InPort { Name = "control" }
+        }
+        OutPortList {
+            OutPort { Name = "stop" }
+        }
+    }
+
+    InternalCouplingList{
+    }
+
+    ExternalInputCouplingList{
+        Coupling {
+            M1Name = "root"
+            M1Port = "root_control"
+            M2Name = "light-sensor"
+            M2Port = "control"
+        }
+    }
+
+    ExternalOutputCouplingList{
+        Coupling {
+            M1Name = "light-sensor"
+            M1Port = "stop"
+            M2Name = "root"
+            M2Port = "root_stop"
+        }
+    }
+}

@@ -1,0 +1,62 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "active"
+    }
+
+    State { 
+        Name = "passive"
+    }
+
+    // Transitions
+    Transition {  
+        Action = "job_count_1=0,job_count_2=0,time_advance=6"
+        Description = "Initializing the model"
+        Source = "start"  
+        Target = "active" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 6.0
+    }
+
+    InternalTransition {
+        Action = "job_count_1=job_count_1+1,job_count_2=job_count_2+1,time_advance=6"
+        Description = "Increment job_count_1 and job_count_2, generate jobs, and schedule next"
+        Guard = "" 
+        Source = "active"  
+        Target = "active"  
+        TimeAdvanceType = Value  
+        TimeAdvanceValue = 6.0
+    }
+
+    ExternalTransition {
+        Action = "state=passive,time_advance=Infinity"
+        Description = "Stop signal received, transitioning to passive"
+        Guard = ""
+        InputPort = "stop"
+        Message = ""
+        Source = "active"  
+        Target = "passive"  
+        TimeAdvanceType = Infinity  
+        TimeAdvanceValue = 0.0
+    }
+
+    OutputFunction { 
+        Action = ""
+        Description = "Send generated job signal to out_1 when a job is generated"
+        Guard = "" 
+        Message = "jobb1{job_count_1+1}" 
+        OutputPort = "out_1" 
+    }
+
+    OutputFunction { 
+        Action = ""
+        Description = "Send generated job signal to out_2 when a job is generated"
+        Guard = "" 
+        Message = "jobb2{job_count_2+1}" 
+        OutputPort = "out_2" 
+    }
+}

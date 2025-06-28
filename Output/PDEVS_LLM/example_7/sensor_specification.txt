@@ -1,0 +1,72 @@
+Coupled Model {
+    Name = "SensorControlSystem"
+
+    ModelInPortList{
+        ModelInPort { Name = "feedback_in" }
+    }
+
+    ModelOutPortList{
+        ModelOutPort { Name = "signal_out" }
+    }
+
+    Component {
+        Name = "controller1"
+        InPortList {
+            InPort { Name = "feedback_in" }
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+    Component {
+        Name = "controller2"
+        InPortList {
+            InPort { Name = "feedback_in" }
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+    Component {
+        Name = "controller3"
+        InPortList {
+            InPort { Name = "feedback_in" }
+        }
+        OutPortList {
+            OutPort { Name = "signal_out" }
+        }
+    }
+
+    InternalCouplingList{
+        Coupling {
+            M1Name = "controller1"
+            M1Port = "signal_out"
+            M2Name = "controller2"
+            M2Port = "feedback_in"
+        }
+        Coupling {
+            M1Name = "controller2"
+            M1Port = "signal_out"
+            M2Name = "controller3"
+            M2Port = "feedback_in"
+        }
+    }
+
+    ExternalInputCouplingList{
+        Coupling {
+            M1Name = "SensorControlSystem"
+            M1Port = "feedback_in"
+            M2Name = "controller1"
+            M2Port = "feedback_in"
+        }
+    }
+
+    ExternalOutputCouplingList{
+        Coupling {
+            M1Name = "controller3"
+            M1Port = "signal_out"
+            M2Name = "SensorControlSystem"
+            M2Port = "signal_out"
+        }
+    }
+}

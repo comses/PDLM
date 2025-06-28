@@ -1,0 +1,72 @@
+Coupled Model {
+    Name = "Light-Controller-Sensor"
+
+    ModelInPortList{
+        ModelInPort { Name = "control_sig" }
+    }
+
+    ModelOutPortList{
+        ModelOutPort { Name = "sensor_status" }
+    }
+
+    Component {
+        Name = "controller"
+        InPortList {
+            InPort { Name = "control_in" }
+        }
+        OutPortList {
+            OutPort { Name = "control_out" }
+        }
+    }
+    Component {
+        Name = "light"
+        InPortList {
+            InPort { Name = "control_in" }
+        }
+        OutPortList {
+            OutPort { Name = "status_out" }
+        }
+    }
+    Component {
+        Name = "sensor"
+        InPortList {
+            InPort { Name = "light_status_in" }
+        }
+        OutPortList {
+            OutPort { Name = "status_out" }
+        }
+    }
+
+    InternalCouplingList{
+        Coupling {
+            M1Name = "controller"
+            M1Port = "control_out"
+            M2Name = "light"
+            M2Port = "control_in"
+        }
+        Coupling {
+            M1Name = "light"
+            M1Port = "status_out"
+            M2Name = "sensor"
+            M2Port = "light_status_in"
+        }
+    }
+
+    ExternalInputCouplingList{
+        Coupling {
+            M1Name = "Light-Controller-Sensor"
+            M1Port = "control_sig"
+            M2Name = "controller"
+            M2Port = "control_in"
+        }
+    }
+
+    ExternalOutputCouplingList{
+        Coupling {
+            M1Name = "sensor"
+            M1Port = "status_out"
+            M2Name = "Light-Controller-Sensor"
+            M2Port = "sensor_status"
+        }
+    }
+}
