@@ -14,8 +14,8 @@ conversation = Conversation()
 with open('./system_descriptions.json', 'r') as file: ## All the prompts discusssed in the paper are provided in the json file.
     data = json.load(file)
 
-name = "example_1" ## Replace the system name to model. 
-sys_des = data[f"{name}"] ## Replace the system description to model. 
+name = "example_1" ## Replace the system name. 
+sys_des = data[f"{name}"] ## Replace the system description if testing on a different (than examples) system. 
 
-output_dir = f'./Output_now/{name}'
-conversation.user_interact(output_dir, sys_des)
+output_dir = f'./Output/PDEVS_LLM/{name}'
+conversation.user_interact(output_dir, sys_des) 
