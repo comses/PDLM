@@ -24,7 +24,19 @@ pip install openai==0.28.0
 
 2. open `config.py` and provide your OPENAI API KEY.
 
-## ✅ Inference on Example System Descriptions:
+## ✅ Inferencing PDEVS-LLM:
 
-1. Open `main.py` and 
+1. Open `main.py` and choose the system description to be testing on from `system_descriptions.json` file.
+2. After making changes to `main.py` run this sript by using the following command.
+
+```bash
+python main.py
+```
+
+3. User will be displayed the generated statechart and asked for modifications. If user desired certain modifications, they can request by editing `modifications.md` file.
+4. After making desired edit to `modifications.md` return bck to the terminal and provide input "yes" for the statechart refinement.
+5. Steps 3 & 4 will be repeated untill the User is satisfied by the generated statechart.
+6. To test user's system, he/she can provide the system description as value (string) to the `sys_des` variable in `main.py`.
+
+
 
