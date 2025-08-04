@@ -38,5 +38,7 @@ python main.py
 5. Steps 3 & 4 will be repeated untill the User is satisfied by the generated statechart.
 6. To test user's system, he/she can provide the system description as value (string) to the `sys_des` variable in `main.py`.
 
+Generated Statecharts will follow the following EBNF Format. 
+![Statechart Grammar]([stat](https://github.com/comses/PDLM/blob/main/images/Statechart-Grammar.png))
 
 
