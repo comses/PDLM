@@ -16,7 +16,7 @@ Behavioral models of component-based dynamical systems are integral to building 
 
 ## 📦 Install dependencies and configure your openai keys:
 
-1. Create a new python environment (or use the prefered environment) and install the suitable openai library by running the following command in your terminal. 
+1. Create a new python environment (or use the prefered environment) and install the suitable openai library by running the following command in your terminal.
 
 ```bash
 pip install openai==0.28.0
@@ -41,4 +41,4 @@ python main.py
 Generated Statecharts will follow the following EBNF Format. 
 ![Statechart Grammar](https://github.com/comses/PDLM/blob/main/images/Statechart-Grammar.png)
 
-
+This work is developed and testing using python 3.12.9 on Linux OS.
