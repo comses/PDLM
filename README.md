@@ -6,7 +6,7 @@ Version   1.0
 
 Authors:  Vamsi Krishna Satyanarayana Vasa & Hessam S. Sarjoughian
 
-This software is produced as part of a Master's Thesis in the School of Computing and Augmented Intelligence, Arizona State University, Tempe, Arizona, USA. This work is published under the title ***GENERATIVE STATECHARTS-DRIVEN PDEVS MODELING***, to appear at [Winter Simulation Conference 2025](https://www.wintersim.org/) in Seattle, USA.
+This software is produced as part of a Master's Thesis in the School of Computing and Augmented Intelligence, Arizona State University, Tempe, Arizona, USA. This work is a pre-print for the article entitled ***GENERATIVE STATECHARTS-DRIVEN PDEVS MODELING***, [Winter Simulation Conference 2025](https://www.wintersim.org/) in Seattle, USA.
 
 ## Abstract
 
