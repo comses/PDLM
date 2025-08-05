@@ -15,14 +15,17 @@ Behavioral models of component-based dynamical systems are integral to building 
 ![Framework Overview](https://github.com/comses/PDLM/blob/main/images/PDEVS-Copilot.jpg)
 
 ## 📦 Install dependencies and configure your openai keys:
-
-1. Create a new python environment (or use the prefered environment) and install the suitable openai library by running the following command in your terminal.
+1. Clone this repository by running the following command in your terminal.
+```bash
+git clone https://github.com/comses/PDLM.git
+```
+2. Create a new python environment (or use the prefered environment) and install the suitable openai library by running the following command in your terminal.
 
 ```bash
 pip install openai==0.28.0
 ```
 
-2. open `config.py` and provide your OPENAI API KEY.
+3. open `config.py` and provide your OPENAI API KEY.
 
 ## ✅ Inferencing PDEVS-LLM:
 
