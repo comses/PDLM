@@ -42,11 +42,11 @@ class Conversation:
         lines = f.readlines()
     FIRST_STAGE_PRIMER = ''.join(lines[7:])
 
-    with open("./Grammar_prompts/DEVS-Spec atomic formation.md", 'r') as f:
+    with open("./Grammar_prompts/PDEVS-Spec atomic formation.md", 'r') as f:
         lines = f.readlines()
     PDEVS_SPEC_GRAMMAR = ''.join(lines[7:])
     
-    with open("./Grammar_prompts/DEVS-Spec coupled formation.md", 'r') as f:
+    with open("./Grammar_prompts/PDEVS-Spec coupled formation.md", 'r') as f:
         lines = f.readlines()
     COUPLED_PDEVS_SPEC = ''.join(lines[7:])
     
