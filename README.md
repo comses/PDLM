@@ -36,7 +36,11 @@ pip install openai==0.28.0
 python main.py
 ```
 
-3. User will be displayed the generated statechart and asked for modifications. If user desired certain modifications, they can request by editing `modifications.md` file.
+3. User will be displayed the generated statechart and asked for modifications. If user desired certain modifications, they can request by editing `modifications.md` file. One common example would be the repeatation of state and time advance changes in the `Action` property. To limit this we have provided an example modification prompt in the `modifications.md` file. The prompt is:
+```
+Great response, But remove state and time advance changes from the Action property.
+```
+The above prompt is suitable for external and internal transition functions. Other prompts need to be devised to correct errors in any elements of the atomic models.
 4. After making desired edit to `modifications.md` return back to the terminal and provide input "yes" for the statechart refinement.
 5. Steps 3 & 4 will be repeated untill the User is satisfied by the generated statechart.
 6. To test user's system, he/she can provide the system description as value (string) to the `sys_des` variable in `main.py`.
