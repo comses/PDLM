@@ -48,4 +48,4 @@ The above prompt is suitable for external and internal transition functions. Oth
 Generated Statecharts will follow the following EBNF Format. 
 ![Statechart Grammar](https://github.com/comses/PDLM/blob/main/images/Statechart-Grammar.png)
 
-This work is developed and testing using python 3.12.9 on Linux OS.
+This work is developed and tested using python 3.12.9 on Linux OS.
