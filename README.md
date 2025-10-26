@@ -11,3 +11,14 @@ This software is produced as part of a Master's Thesis in the School of Computin
 ## Abstract
 
 ![Framework overview](https://github.com/comses/PDLM/blob/simpat2025/images/Segregated_Entailment_based_Verification.png)
+
+## 📦 Install dependencies and configure your openai keys:
+1. Clone this repository by running the following command in your terminal.
+```bash
+git clone https://github.com/comses/PDLM.git
+```
+2. Switch to this branch
+```bash
+git checkout simpat2025
+```
+3. Create a new python environment (or use the prefered environment) and install the required libraries by running the following command in your terminal.
