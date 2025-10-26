@@ -1,0 +1,8 @@
+@startuml
+hide empty description
+"idle" -[bold]-> "tracking" : A = "", G = "msgIn=1", IP = "track_input", M = "1", TA = "222.0"
+"idle" -[bold]-> "idle" : A = "", G = "msgIn=-1", IP = "stop_input", M = "-1", TA = "222.0"
+"tracking" -[bold]-> "tracking" : A = "", G = "msgIn=-1", IP = "stop_input", M = "-1", TA = "0.0"
+"tracking" -[dashed]-> "idle" : A = "", G = "", TA = "222.0"
+"tracking" : OF $ A = "", G = "msgIn=-1", M = "-2", OP = "route_output"
+@enduml

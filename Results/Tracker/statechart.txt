@@ -1,0 +1,85 @@
+Model {
+    ConfluentType = FIT
+
+    // States
+    InitialState { Name = "start" }
+
+    State { 
+        Name = "idle"
+    }
+
+    State { 
+        Name = "tracking"
+        OutputFunction {
+            Action = ""
+            Description = "Output -2 to route_output if tracking is stopped externally"
+            Guard = "msgIn=-1"
+            Message = "-2"
+            OutputPort = "route_output"
+        }
+    }
+
+    // Transitions
+    InitialTransition {  
+        Action = ""
+        Description = "Initialize to idle state"
+        Source = "start"  
+        Target = "idle" 
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 222.0
+    }
+
+    ExternalTransition {
+        Action = ""
+        Description = "Start tracking if 1 is received at track_input and currently idle"
+        Guard = "msgIn=1"
+        InputPort = "track_input"
+        Message = "1"
+        Source = "idle"
+        Target = "tracking"
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 222.0
+    }
+
+    ExternalTransition {
+        Action = ""
+        Description = "Remain idle if -1 is received at stop_input and currently idle"
+        Guard = "msgIn=-1"
+        InputPort = "stop_input"
+        Message = "-1"
+        Source = "idle"
+        Target = "idle"
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 222.0
+    }
+
+    ExternalTransition {
+        Action = ""
+        Description = "Stop tracking immediately if -1 is received at stop_input and currently tracking"
+        Guard = "msgIn=-1"
+        InputPort = "stop_input"
+        Message = "-1"
+        Source = "tracking"
+        Target = "tracking"
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 0.0
+    }
+
+    InternalTransition {
+        Action = ""
+        Description = "End of tracking period, go to idle"
+        Guard = ""
+        Source = "tracking"
+        Target = "idle"
+        TimeAdvanceType = Value
+        TimeAdvanceValue = 222.0
+    }
+
+    OutputFunction {
+        Action = ""
+        Description = "Output 2 to route_output when tracking ends"
+        Guard = ""
+        Message = "2"
+        OutputPort = "route_output"
+    }
+}
