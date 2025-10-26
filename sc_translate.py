@@ -1,3 +1,10 @@
+#  
+# Author    : ACIMS(Arizona Centre for Integrative Modeling & Simulation)
+#           : Vamsi Krishna Satyanarayana Vasa and Dr. Hessam S. Sarjoughian
+# Version   : 1.0 
+# Date      : 10-26-2025 
+# 
+
 import os
 import re
 from collections import defaultdict
