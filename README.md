@@ -8,6 +8,8 @@ Authors:  Vamsi Krishna Satyanarayana Vasa & Hessam S. Sarjoughian
 
 This software is produced as part of a Master's Thesis in the School of Computing and Augmented Intelligence, Arizona State University, Tempe, Arizona, USA. This work is a pre-print for the article entitled ***GENERATIVE STATECHARTS-DRIVEN PDEVS MODELING***, and will be presented at [Winter Simulation Conference 2025](https://www.wintersim.org/) in Seattle, USA.
 
+This research is support by a grant from Intel Corporation.
+
 ## Abstract
 
 Behavioral models of component-based dynamical systems are integral to building useful simulations. Toward this goal, approaches enabled by Large Language Models (LLMs) have been proposed and developed to generate grammar-based models for Discrete Event System Specification (DEVS). This paper introduces PDEVS-LLM, an agentic framework to assist in developing Parallel DEVS (PDEVS) models. It proposes using LLMs with statecharts to generate behaviors for parallel atomic models. Enabled with PDEVS concepts, plausible facts from the whole description of a system are extracted. The PDEVS-LLM is equipped with grammars for the PDEVS statecharts and hierarchical coupled model. LLM agents assist modelers in (re-)generating atomic models with conversation histories. Examples are developed to demonstrate the capabilities and limitations of LLMs for generative PDEVS models.
